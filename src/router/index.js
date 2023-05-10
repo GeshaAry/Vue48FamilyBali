@@ -64,6 +64,13 @@ const router = new VueRouter({
                 meta: { title: 'Article'},
                 component: importComponent("DataAdmin/Article"),
               },
+               //Detail Activity
+               {
+                path: "/detailactivity",
+                name: "DetailActivity",
+                meta: { title: 'Detail Activity'},
+                component: importComponent("DataAdmin/DetailActivity"),
+              },
           ],        
       },
       {
@@ -84,12 +91,40 @@ const router = new VueRouter({
                 meta: { title: 'Video'},
                 component: importComponent("VideoPage"),
               },
-              //Video Page
+              //Detail Video Page
               {
                   path: "/detailvideo/:id",
                   name: "DetailVideo",
                   meta: { title: 'Detail Video'},
                   component: importComponent("DetailVideo"),
+              },
+              //Member JKT48 Page
+                 {
+                  path: "/memberjkt48",
+                  name: "MemberJKT48Page",
+                  meta: { title: 'Member JKT48 Page'},
+                  component: importComponent("MemberJKT48Page"),
+              },
+              //Detail Member JKT48 Page
+                 {
+                  path: "/detailmemberjkt48/:id",
+                  name: "DetailMemberJKT48Page",
+                  meta: { title: 'Detail Member JKT48 Page'},
+                  component: importComponent("DetailMemberJKT48Page"),
+              },
+               //Activity Page
+               {
+                path: "/activitypage/",
+                name: "ActivityPage",
+                meta: { title: 'Activity Page'},
+                component: importComponent("ActivityPage"),
+              },
+              //Detail Activity Page
+              {
+                path: "/detailactivitypage/:id",
+                name: "DetailActivityPage",
+                meta: { title: 'Detail Activity Page'},
+                component: importComponent("DetailActivityPage"),
               },
           ],
       },
@@ -112,7 +147,8 @@ router.beforeEach((to, from, next) =>{
       to.name == 'Member' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' ||
       to.name == 'MerchandiseCategory' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin'||
       to.name == 'Video' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' ||
-      to.name == 'Article' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' 
+      to.name == 'Article' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' ||
+      to.name == 'DetailActivity' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' 
     ){
         next({
             name: "LoginAdmin"

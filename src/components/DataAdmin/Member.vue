@@ -2,7 +2,7 @@
     <v-main class="list">
         <v-card style="overflow:hidden; box-shadow:0px 2px 6px rgba(0,0,0,0.05); background-color:white">
             <v-card-title>
-                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Gallery Category" single-line hide-details>
+                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Member JKT48" single-line hide-details>
                 </v-text-field>
                 <v-spacer></v-spacer>
                 <v-btn style="background-color:#0165BC; color:white" @click="dialog = true"> Add Member JKT48 </v-btn>
@@ -99,7 +99,7 @@
                                 <v-text-field filled rounded v-model="form.member_gen"
                                     label="Member Generation" required>
                                 </v-text-field>
-                                <v-select filled rounded :items="memberStatus" v-model="form.memberstatus" label="Member Status"
+                                <v-select filled rounded :items="memberStatus" v-model="form.member_status" label="Member Status"
                                     item-value="value" item-text="text">
                                 </v-select>
                                 <v-text-field type="date" filled rounded  v-model="form.member_birthdate"
@@ -373,7 +373,7 @@
             readData() {
                 var url = this.$api + '/member';
                 this.$http.get(url).then(response => {
-                    this.memberjkt48s = response.data.data;
+                    this.memberjkt48s = response.data.data.data;
                 })
             },
             save() {
@@ -441,6 +441,8 @@
                 data.append('_method', 'PUT');
 
                 var url = this.$api + '/member/' + this.editId;
+
+                console.log(url,'wibu', this.editId);
                 this.load = true;
 
 
@@ -506,6 +508,7 @@
                 this.form.member_showroom = item.member_showroom;
                 this.form.member_picture = item.member_picture;
                 this.dialog = true;
+                console.log('xxxxxxxx', this.editId)
             },
             deleteHandler(item) {
                 this.deleteId = item.member_id;

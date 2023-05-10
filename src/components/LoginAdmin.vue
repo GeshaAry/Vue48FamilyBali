@@ -101,7 +101,7 @@
         height:500px; 
         border-radius:20px; 
         background-color:white;
-        margin-top: -725px;
+        margin-top: -1000px;
     }
     
 

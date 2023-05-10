@@ -20,12 +20,18 @@
                         </ul>
                     </li>
                     <li class="menu-item">
-                        <a class="sub-btn" href="#">Member</a>
+                        <a class="sub-btn" @click="MemberJKT48" >Member</a>
                     </li>
                     <li class="menu-item">
-                        <a class="sub-btn">Activity</a>
+                        <a class="sub-btn" @click="ActivityPage">Activity</a>
                     </li>
-                    <li class="menu-item"><a>Gallery</a></li>
+                    <li class="menu-item">
+                        <a class="sub-btn">Documentation <i class="fas fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li class="sub-item"><a @click="GalleryPage">Gallery Photos</a></li>
+                            <li class="sub-item"><a @click="VideoPage">Gallery Videos</a></li>
+                        </ul>
+                    </li>
                     <li class="menu-item"><a>About</a></li>
                     <li class="menu-item"><a>Sign In/Sign Up</a></li>
                     <!-- <li class="menu-item"><a><a
@@ -61,7 +67,7 @@
                          <img src="../assets/Logo48.png" alt="" style="object-fit:cover; width:50%;">
                     </v-col>
                     <v-col cols="12" md="3">
-                        <ul class="ul-detailfooter mx-4">
+                        <ul class="ul-detailfooter mx-4 my-4">
                             <li class="li-footer">Event</li>
                             <li class="li-footer">Merchandise</li>
                             <li class="li-footer">Article</li>
@@ -69,43 +75,31 @@
                         </ul>
                     </v-col>
                     <v-col cols="12" md="3" >
-                        <ul class="ul-detailfooter mx-4">
+                        <ul class="ul-detailfooter mx-4 my-4">
                             <li class="li-footer">Activity</li>
                             <li class="li-footer">Gallery</li>
                             <li class="li-footer">About</li>
                         </ul>
                     </v-col>
                     <v-col cols="12" md="3">
-                        <p  class="mb-4" style="font-size:20px; color:white;">Our Social Media</p>
-                        <v-row gutters="5">
-                            <v-col cols="6" md="6">
-                                <div class="bg-white py-3 px-5 rounded-lg mb-4 mx-4">
-                                 <!-- <img src="../assets/paypal.png" alt=""
-                                    style="object-fit:cover; width:100%; height:70px;"> -->
+                        <p class="mb-4" style="font-size:20px; color:white;">Our Social Media</p>
+                        <v-row style="display:flex; justify-content:center;">
+                            <v-col cols="2" style="display:flex; justify-content:center;">
+                                <div class="social-media">
+                                 <img src="../assets/twitter.png" alt=""
+                                    style="object-fit:cover; width:60%; height:auto;">
                                 </div>
                             </v-col>
-                              <v-col cols="6" md="6">
-                                <div class="bg-white py-3 px-5 rounded-lg  mb-4 mx-4 ">
-                                 <!-- <img src="../assets/visa.png" alt=""
-                                    style="object-fit:cover; width:100%; height:70px;"> -->
+                              <v-col cols="2" style="display:flex; justify-content:center;">
+                                <div class="social-media">
+                                  <img src="../assets/instagram.png" alt=""
+                                    style="object-fit:cover; width:60%; height:auto;">
                                 </div>
                             </v-col>
-                              <v-col cols="6" md="6">
-                                <div class="bg-white py-3 px-5 rounded-lg  mb-4 mx-4">
-                                 <!-- <img src="../assets/mastercard.png" alt=""
-                                    style="object-fit:cover; width:52%; height:70px;"> -->
-                                </div>
-                            </v-col>
-                              <v-col cols="6" md="6">
-                                 <div class="bg-white py-3 px-5 rounded-lg  mb-4 mx-4">
-                                 <!-- <img src="../assets/americanexpress.png" alt=""
-                                    style="object-fit:cover; width:100%; height:70px;"> -->
-                                </div>
-                            </v-col>
-                              <v-col cols="6" md="6">
-                                 <div class="bg-white py-3 px-5 rounded-lg  mb-4 mx-4">
-                                 <!-- <img src="../assets/discover.png" alt=""
-                                    style="object-fit:cover; width:100%; height:50px;"> -->
+                              <v-col cols="2" style="display:flex; justify-content:center;">
+                                <div class="social-media">
+                                  <img src="../assets/discord.png" alt=""
+                                    style="object-fit:cover; width:60%; height:auto;">
                                 </div>
                             </v-col>
                         </v-row>
@@ -166,6 +160,26 @@
             };
         },
         methods: {
+            MemberJKT48() {
+                this.$router.push({
+                    name: 'MemberJKT48Page',
+                });
+            },
+            GalleryPage() {
+                this.$router.push({
+                    name: 'GalleryPage',
+                });
+            },
+            VideoPage() {
+                this.$router.push({
+                    name: 'VideoPage',
+                });
+            },
+            ActivityPage() {
+                this.$router.push({
+                    name: 'ActivityPage',
+                });
+            },
         },
         mounted() {
         },
@@ -177,6 +191,15 @@
         padding: 0;
     }
 
+    .social-media{
+        height: 50px;
+        width: 50px;
+        border: #ffffff 2px solid;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .ul-detailfooter {
         list-style: none;
         padding: 0;
@@ -273,7 +296,7 @@
     }
 
     .menu-item>a:hover {
-        color: #469DFF;
+        color: white;
         transition: 0.3s;
     }
 
@@ -317,7 +340,7 @@
     }
 
     .menu-item .sub-menu .sub-item:hover {
-        background: #4080EF;
+        background: #BE1814;
     }
 
     .menu-item .sub-menu .sub-item:last-child:hover {

@@ -105,11 +105,11 @@
                                     />
                             </v-container>
                         </v-card-text>
-                        <v-card-action>
+                        <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text @click="cancel">Cancel</v-btn>
                             <v-btn color="blue darken-1" text @click="setForm">Save</v-btn>
-                        </v-card-action>
+                        </v-card-actions>
                     </v-card>
                 </v-dialog>
             </v-col>

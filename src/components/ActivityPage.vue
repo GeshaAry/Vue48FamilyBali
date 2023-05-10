@@ -3,16 +3,21 @@
          <section>
             <div class="thumbnail">
                 <img src="../assets/wallpaperlogin.png" style="object-fit: cover; width:100%; height:500px;" alt="">
-                <div class="centered">Gallery</div>
+                <div class="centered">Activity JKT48</div>
             </div>
         </section>
         <section style="display:flex; justify-content:center; align-items:center;">
             <v-container grid-list-xl>
                 <v-layout row wrap justify-center class="my-5">
-                        <div class="gallery-content" v-for="(item, index) in gallery.data" :key="index">
-                            <div class="picture-gallery">
-                                <img :src="$baseUrl+'/storage/'+item.gallery_picture"
+                        <div class="activity-content" v-for="(item, index) in activity.data" :key="index">
+                            <div class="picture-activity">
+                                <img :src="$baseUrl+'/storage/'+item.activity_thumbnail"
                                     style="object-fit: cover; width:100%; height:400px;" class="pictures" alt="">
+                                
+                             <div class="content-activity" @click="detailActivity(item.activity_id)">
+                                <p style="font-weight:700; font-size:25px; color:#DA1F1A; padding-top:10px;">{{ item.activity_title}}</p>
+                                <p style="color:#DA1F1A;">{{ item.activity_date}}</p>
+                             </div>
                             </div>
                         </div>
                 </v-layout>
@@ -28,17 +33,26 @@
     export default {
         data() {
             return {
-                gallery:[],
+                activity:[],
             };
         },
         methods: {
              getResults(page = 1) {
-             this.$http.get(this.$api + '/gallery?limit=9&page=' + page )
+             this.$http.get(this.$api + '/activity?limit=9&page=' + page )
                 .then(response => {
-                    this.gallery = response.data.data;
+                    this.activity = response.data.data;
                 }).catch(error => {
                     console.log(error)
                 })
+            },
+
+            detailActivity(activity_id){
+                 this.$router.push({
+                    name: 'DetailActivityPage',
+                    params: {
+                        id: activity_id,
+                    }
+                });
             }
         },
         mounted() {
@@ -69,45 +83,31 @@
         font-size: 50px;
         font-weight: 700;
     }
-    .gallery-content {
+    .activity-content {
         width: 550px;
         height: 400px;
         background-color: white;
         margin: 20px;
+        box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);
+        
     }
 
-    .picture-gallery {
+    .picture-activity {
         width: 100%;
         height: 400px;
         background-color: antiquewhite;
         overflow: hidden;
     }
-
-    .pictures{
-        -webkit-transform: rotate(15deg) scale(1.4);
-        transform: rotate(15deg) scale(1.4);
-        -webkit-transition: .3s ease-in-out;
-        transition: .3s ease-in-out;
+    
+    .content-activity{
+        width: 550px;
+        height: 100px;
+        background-color: white;
+        position: relative;
+        margin-top: -100px;
+        border-radius: 30px 30px 0px 0px;
+        cursor: pointer;
     }
-
-    .pictures:hover{
-        -webkit-transform: rotate(0) scale(1);
-	    transform: rotate(0) scale(1);
-    }
-
-    .button-news {
-        width: 40%;
-        height: 50px;
-        background-color: #0165BC;
-        border-radius: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 20px;
-        color: white;
-        margin-top: 20px;
-    }
-
 
     #app {
         margin-top: 0 !important;

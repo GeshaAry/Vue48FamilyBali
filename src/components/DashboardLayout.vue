@@ -85,6 +85,16 @@
                     </v-list-item-content>
                 </v-list-item>
 
+                <!-- Detail Activity Member -->
+                <v-list-item v-for="item in itemsdetailactivity" :key="item.title" link tag="router-link" :to="item.to">
+                    <v-list-item-icon>
+                        <v-icon style="color:white !important">{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title style="color:white !important">{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
                 <!-- Article User -->
                 <v-list-item v-for="item in itemsarticle" :key="item.title" link tag="router-link" :to="item.to">
                     <v-list-item-icon>
@@ -149,6 +159,13 @@
                         icon: 'mdi-calendar-range'
                     },
                 ],
+                itemsdetailactivity:[
+                    {
+                        title: 'Detail Activity JKT48',
+                        to: "/detailactivity",
+                        icon: 'mdi-calendar-range'
+                    },
+                ],
                 itemsarticle:[
                     {
                         title: 'Article',
@@ -188,7 +205,7 @@
         },
     }
 </script>
-<style>
+<style >
     .fullheight {
         min-height: 100vh !important;
     }
@@ -217,5 +234,9 @@
 
     .mdi-chevron-down {
         color: white !important;
+    }
+    .v-application a {
+        cursor: pointer;
+        text-decoration: none;
     }
 </style>

@@ -2,7 +2,7 @@
     <v-main class="list">
         <v-card style="overflow:hidden; box-shadow:0px 2px 6px rgba(0,0,0,0.05); background-color:white">
             <v-card-title>
-                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Photos" single-line hide-details>
+                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Activity" single-line hide-details>
                 </v-text-field>
                 <v-spacer></v-spacer>
                 <v-btn style="background-color:#0165BC; color:white" @click="dialog = true"> Add Photos </v-btn>
@@ -186,7 +186,7 @@
             readData() {
                 var url = this.$api + '/activity';
                 this.$http.get(url).then(response => {
-                    this.activitys = response.data.data;
+                    this.activitys = response.data.data.data;
                 })
             },
             save() {

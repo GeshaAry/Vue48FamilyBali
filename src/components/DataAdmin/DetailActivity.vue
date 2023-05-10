@@ -2,12 +2,12 @@
     <v-main class="list">
         <v-card style="overflow:hidden; box-shadow:0px 2px 6px rgba(0,0,0,0.05); background-color:white">
             <v-card-title>
-                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Merchandise Category" single-line hide-details>
+                <v-text-field v-model="search" append-icon="mdi-magnify" label="Add Package" single-line hide-details>
                 </v-text-field>
                 <v-spacer></v-spacer>
-                <v-btn style="background-color:#0165BC; color:white" @click="dialog = true"> Add Merchandise Category </v-btn>
+                <v-btn style="background-color:#0165BC; color:white" @click="dialog = true"> Add Detail Activity </v-btn>
             </v-card-title>
-            <v-data-table :headers="headers" :items="merchandisecategorys" :search="search"
+            <v-data-table :headers="headers" :items="detailactivitys" :search="search"
                 style="background-color:white; color:black;">
                 <template v-slot:[`item.actions`]="{ item }">
                     <div style="display:flex; align-items:center;">
@@ -24,24 +24,47 @@
 
         <v-row>
             <v-col md="12">
-                <v-dialog max-width="500" v-model="dialog" persistent>
+                <v-dialog max-width="800" v-model="dialog" persistent>
                     <v-card>
                         <v-card-text>
                             <v-container v-if="inputType == 'Tambah'">
                                 <v-card-title>
-                                    <span class="headline">Add Merchandise Category</span>
+                                    <span class="headline">Add Detail Activity</span>
                                 </v-card-title>
-                                <v-text-field filled rounded v-model="form.merchandisectg_name"
-                                    label="Merchandise Category Name" required>
-                                </v-text-field>
+                                <v-select filled rounded v-model="selectActivity" :items="itemsactivity"
+                                    item-text="activity_title" item-value="activity_id" label="Choose Activity" persistent-hint
+                                    return-object single-line></v-select>
+                                <!-- <v-autocomplete filled rounded v-model="selectMember" :items="itemsmember"
+                                    item-value="member_id" label="Choose Member" persistent-hint
+                                    return-object multiple>
+                                    <template slot="selection" slot-scope="data">
+                                        {{ data.item.member_name }} - {{ data.item.member_status}}
+                                    </template>
+                                    <template slot="item" slot-scope="data">
+                                        {{ data.item.member_name }} - {{ data.item.member_status}}
+                                    </template>
+                                </v-autocomplete> -->
+                                <v-autocomplete  filled rounded v-model="selectMember" :items="itemsmember" label="Choose Member" multiple chips deletable-chips>
+                                    
+                                </v-autocomplete>
                             </v-container>
-                            <v-container v-else-if="inputType == 'Ubah'">
+                            <v-container v-else-if="inputType == 'Ubah'">  
                                 <v-card-title>
-                                    <span class="headline">Edit Merchandise Category</span>
+                                    <span class="headline">Edit Detail Activity</span>
                                 </v-card-title>
-                                <v-text-field filled rounded v-model="form.merchandisectg_name"
-                                    label="Merchandise Category Name" required>
-                                </v-text-field>
+                                <v-select filled rounded v-model="selectActivity" :items="itemsactivity"
+                                    item-text="activity_title" item-value="activity_id" label="Choose Activity" persistent-hint
+                                    return-object single-line></v-select>
+                                <v-select filled rounded v-model="selectMember" :items="itemsmember"
+                                    item-value="member_id" label="Choose Member" persistent-hint
+                                    return-object multiple>
+                                    <template slot="selection" slot-scope="data">
+                                        {{ data.item.member_name }} - {{ data.item.member_status}}
+                                    </template>
+                                    <template slot="item" slot-scope="data">
+                                        {{ data.item.member_name }} - {{ data.item.member_status}}
+                                    </template>
+                                </v-select>
                             </v-container>
                         </v-card-text>
                         <v-card-action>
@@ -72,10 +95,15 @@
 </template>
 <script>
     export default {
-        name: "MerchandiseCategory",
+        name: "DetailActivity",
         data() {
             return {
+                selectActivity:[],
+                selectMember:[],
+                member_id:[],
                 items: [],
+                itemsactivity: [],
+                itemsmember: [],
                 inputType: 'Tambah',
                 load: false,
                 snackbar: false,
@@ -84,27 +112,34 @@
                 search: null,
                 dialog: false,
                 dialogConfirm: false,
+                dialogPhotos:false,
                 isDisabled: false,
+                previewImageUrl: '',
                 headers: [{
-                        text: "Id Merchandise Category",
+                        text: "Detail Activity",
                         align: "start",
                         sortable: true,
-                        value: "merchandisectg_id"
+                        value: "detailactivity_id"
                     },
                     {
-                        text: "Merchandise Category Name",
-                        value: "merchandisectg_name"
+                        text: "Activity Title",
+                        value: "activity.activity_title"
+                    },
+                    {
+                        text: "Member Name",
+                        value: "member.member_name"
                     },
                     {
                         text: "Actions",
                         value: "actions"
                     }
                 ],
-                merchandisecategory: new FormData,
-                merchandisecategorys: [],
+                detailactivity: new FormData,
+                detailactivitys: [],
                 form: {
-                    merchandisectg_id: '',
-                    merchandisectg_name: '',
+                    detailactivity_id: '',
+                    selectActivity: '',
+                    selectMember:'',
                 },
                 deleteId: '',
                 editId: ''
@@ -121,25 +156,41 @@
 
                 }
             },
-            getAllCategory() {
-                var url = this.$api + '/merchandisectg';
+            getAllActivity() {
+                var url = this.$api + '/allactivity';
                 this.$http.get(url).then(response => {
-                    this.items = response.data.data;
+                    this.itemsactivity = response.data.data;
                 })
             },
-            readData() {
-                var url = this.$api + '/merchandisectg';
+             getAllMember() {
+                var url = this.$api + '/allmember';
                 this.$http.get(url).then(response => {
-                    this.merchandisecategorys = response.data.data;
+                    // this.itemsmember = response.data.data;
+                        let data = JSON.parse(JSON.stringify(response.data.data));
+                        data.forEach((item)=>{
+                        let dashboard = item;
+                        dashboard.text = item.member_name + '-' + item.member_status
+                        dashboard.value = item.member_id
+                        this.itemsmember.push(dashboard);
+                    });
+                })
+            },
+             readData() {
+                var url = this.$api + '/detailactivity';
+                this.$http.get(url).then(response => {
+                    this.detailactivitys = response.data.data;
                 })
             },
             save() {
-                this.merchandisecategory.append('merchandisectg_name', this.form.merchandisectg_name);
+                this.detailactivity.append('activity_id', this.selectActivity.activity_id ?? '');
+                for(let i=0; i<this.selectMember.length; i++){
+                    this.detailactivity.append('member_id[]', this.selectMember[i] ?? '');
+                }
 
-                var url = this.$api + '/merchandisectg'
+                var url = this.$api + '/detailactivity'
                 this.load = true;
 
-                this.$http.post(url, this.merchandisecategory, {
+                this.$http.post(url, this.detailactivity, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     }
@@ -161,11 +212,10 @@
             },
             update() {
                 var data = new FormData()
-
-                data.append('merchandisectg_name', this.form.merchandisectg_name);
+                data.append('member_id', this.selectMember.member_id ?? '');
                 data.append('_method', 'PUT');
 
-                var url = this.$api + '/merchandisectg/' + this.editId;
+                var url = this.$api + '/detailactivity/' + this.editId;
                 this.load = true;
 
 
@@ -191,7 +241,7 @@
                 });
             },
             deleteData() {
-                var url = this.$api + '/merchandisectg/' + this.deleteId;
+                var url = this.$api + '/detailactivity/' + this.deleteId;
                 this.load = true;
                 this.$http.delete(url, {
                     headers: {
@@ -215,12 +265,19 @@
             },
             editHandler(item) {
                 this.inputType = 'Ubah';
-                this.editId = item.merchandisectg_id;
-                this.form.merchandisectg_name = item.merchandisectg_name;
+                this.editId = item.detailactivity_id;
+                this.selectActivity = {
+                    activity_id: item.detailactivitys.activity_id,
+                    activity_title: item.detailactivitys.activity_title
+                }
+                this.selectMember = {
+                    member_id: item.memberjkt48s.member_id,
+                    member_name: item.memberjkt48s.member_name
+                }
                 this.dialog = true;
             },
             deleteHandler(item) {
-                this.deleteId = item.merchandisectg_id;
+                this.deleteId = item.detailactivity_id;
                 this.dialogConfirm = true;
             },
             close() {
@@ -241,10 +298,9 @@
                 this.dialogConfirm = false;
             },
             resetForm() {
-                this.form = {
-                    merchandisectg_name: '',
-                };
-            },
+                this.selectActivity = '';
+                this.selectMember = '';
+            }
         },
         computed: {
             formTitle() {
@@ -253,13 +309,8 @@
         },
         mounted() {
             this.readData();
-            this.getAllCategory();
+            this.getAllActivity();
+            this.getAllMember();
         },
     };
 </script>
-
-<style scoped>
-    .v-dialog{
-        width: 50% !important;
-    }
-</style>
