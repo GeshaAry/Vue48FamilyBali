@@ -32,7 +32,7 @@
                             <li class="sub-item"><a @click="VideoPage">Gallery Videos</a></li>
                         </ul>
                     </li>
-                    <li class="menu-item"><a>About</a></li>
+                    <li class="menu-item"><a  @click="AboutPage">About</a></li>
                     <li class="menu-item"><a>Sign In/Sign Up</a></li>
                     <!-- <li class="menu-item"><a><a
                                 @click="detailProfile(customer.customer_id)">Hello, {{customer.customer_name}}</a></a>
@@ -178,6 +178,11 @@
             ActivityPage() {
                 this.$router.push({
                     name: 'ActivityPage',
+                });
+            },
+            AboutPage() {
+                this.$router.push({
+                    name: 'AboutUs',
                 });
             },
         },

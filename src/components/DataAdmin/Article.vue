@@ -39,12 +39,18 @@
                                 <v-card-title>
                                     <span class="headline">Add Article</span>
                                 </v-card-title>
-                                <v-file-input rounded filled prepend-icon="mdi-camera" label="Upload Photos" id="filePhotos"
+                                <v-file-input rounded filled prepend-icon="mdi-camera" label="Upload Thumbnail" id="filePhotos"
                                     ref="filePhotosGallery"></v-file-input>
                                 <p>Upload maximum size file picture: 1 MB</p>
                                 <v-text-field filled rounded v-model="form.article_title"
                                     label="Article Title" required>
                                 </v-text-field>
+
+                                <div style="display:flex; justify-content:center; align-item:center; flex-flow:column">
+                                        <input type="file" @change="onChange" ref="filePhotosArticle" class="filespicture" multiple/>
+                                        <span>Upload maximum size file picture: 1 MB</span>
+                                </div>
+
                                 <editor
                                     api-key="tx8fjxrs5lqmjq2w9obzcjrdkewcyztzff962uqvi4woty7v"
                                     :init="{
@@ -76,12 +82,14 @@
                                     :src="previewImageUrl == '' ? $baseUrl+'/storage/'+form.article_thumbnail : previewImageUrl"
                                     id="previewImage" class="mb-5"></v-img>
                                 </center> -->
-                                 <v-file-input rounded filled prepend-icon="mdi-camera" label="Upload Photos" id="filePhotos"
+                                 <v-file-input rounded filled prepend-icon="mdi-camera" label="Upload Thumbnail" id="filePhotos"
                                     ref="filePhotosGallery"></v-file-input>
                                 <span>Upload maximum size file picture: 1 MB</span>
+
                                 <v-text-field filled rounded v-model="form.article_title"
                                     label="Article Title" required>
                                 </v-text-field>
+                                
                                 <editor
                                     api-key="tx8fjxrs5lqmjq2w9obzcjrdkewcyztzff962uqvi4woty7v"
                                     :init="{
@@ -152,6 +160,7 @@
         data() {
             return {
                 items: [],
+                files: [],
                 inputType: 'Tambah',
                 load: false,
                 snackbar: false,
@@ -198,6 +207,7 @@
                     article_title:'',
                     article_thumbnail:'',
                     article_description:'',
+                    article_pictures: '',
                 },
                 deleteId: '',
                 editId: ''
@@ -206,6 +216,14 @@
         methods: {
             onPreviewImage(e) {
                 this.previewImageUrl = URL.createObjectURL(e)
+            },
+            onChange(a){ 
+                
+                for(let i=0; i<a.target.files.length; i++){
+                    this.files.push(a.target.files[i]);
+                } 
+               
+                console.log(a.target.files);
             },
             setForm() {
                 if (this.inputType !== 'Tambah') {
@@ -224,7 +242,7 @@
             readData() {
                 var url = this.$api + '/article';
                 this.$http.get(url).then(response => {
-                    this.articles = response.data.data;
+                    this.articles = response.data.data.data;
                 })
             },
             save() {
@@ -234,10 +252,24 @@
                 this.article.append('article_thumbnail', dataFilePhotos ?? '');
                 this.article.append('article_title', this.form.article_title);
                 this.article.append('article_description', this.form.article_description);
+                 for(let i=0; i<this.files.length; i++){
+                    //  if(this.files.length > 5){
+                    //     alert("You can only upload a maximum of 5 files");
+                    //     this.files.length = [];
+                    //     return;
+                    // }
+                    // else{
+                       
+                    // }
+                     this.article.append('article_pictures[]', this.files[i]);
+                }
+              
+                
+                console.log(this.article);
 
                 var url = this.$api + '/article'
                 this.load = true;
-
+            
                 this.$http.post(url, this.article, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('token'),

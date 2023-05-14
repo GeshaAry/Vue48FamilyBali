@@ -126,6 +126,20 @@ const router = new VueRouter({
                 meta: { title: 'Detail Activity Page'},
                 component: importComponent("DetailActivityPage"),
               },
+               //About Us
+               {
+                path: "/aboutus",
+                name: "AboutUs",
+                meta: { title: 'About Us'},
+                component: importComponent("AboutUs"),
+              },
+              //About Us
+              {
+                path: "/articlepage",
+                name: "ArticlePage",
+                meta: { title: 'Article Page'},
+                component: importComponent("ArticlePage"),
+              },
           ],
       },
       //Login Admin
