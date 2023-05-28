@@ -30,6 +30,28 @@
             </v-data-table>
         </v-card>
 
+         <v-card style="overflow:hidden; box-shadow:0px 2px 6px rgba(0,0,0,0.05); background-color:white">
+            <v-card-title>
+                <v-text-field v-model="searcharticlepictures" append-icon="mdi-magnify" label="Search Article Pictures" single-line hide-details>
+                </v-text-field>
+                <v-spacer></v-spacer>
+            </v-card-title>
+            <v-data-table :headers="headersarticlepictures" :items="articlepictures" :search="searcharticlepictures"
+                style="background-color:white; color:black;">
+                <template v-slot:[`item.article_picture`]="{item}">
+                    <v-img :src="$baseUrl+'/storage/'+item.article_picture" height="50px" width="50px" 
+                        style="object-fit:cover; border-radius:50%; cursor:pointer" @click="showPhotos(item)" />
+                </template>
+                <template v-slot:[`item.actions`]="{ item }">
+                    <div style="display:flex; align-items:center;">
+                    <div style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                        <span style="cursor: pointer;"  @click="deleteHandler(item)">Delete</span>
+                    </div>
+                    </div>
+                </template>
+            </v-data-table>
+        </v-card>
+
         <v-row>
             <v-col md="12">
                 <v-dialog max-width="800" v-model="dialog" persistent>
@@ -132,6 +154,15 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog max-width="400" v-model="dialogPhotosArticlePictures">
+            <v-card>
+                <v-container>
+                   <v-img width="100%" :src="previewImageUrl == '' ? $baseUrl+'/storage/'+form.article_picture : previewImageUrl"
+                    id="previewImage" class="mb-5"></v-img>
+                </v-container>
+            </v-card>
+        </v-dialog>
+
         <v-dialog v-model="dialogConfirm" persistent max-width="400px">
             <v-card>
                 <v-card-title>
@@ -161,15 +192,18 @@
             return {
                 items: [],
                 files: [],
+                articlepictures: [],
                 inputType: 'Tambah',
                 load: false,
                 snackbar: false,
                 error_message: [],
                 color: '',
                 search: null,
+                searcharticlepictures: null,
                 dialog: false,
                 dialogConfirm: false,
                 dialogPhotos:false,
+                dialogPhotosArticlePictures:false,
                 isDisabled: false,
                 previewImageUrl: '',
                 headers: [{
@@ -199,6 +233,15 @@
                         value: "actions"
                     }
                 ],
+                headersarticlepictures: [{
+                        text: "Article Id",
+                        value: "article_id"
+                    },
+                    {
+                        text: "Article Pictures",
+                        value: "article_picture"
+                    },
+                ],
                 article: new FormData,
                 articles: [],
                 form: {
@@ -208,6 +251,7 @@
                     article_thumbnail:'',
                     article_description:'',
                     article_pictures: '',
+                    article_picture: '',
                 },
                 deleteId: '',
                 editId: ''
@@ -243,6 +287,12 @@
                 var url = this.$api + '/article';
                 this.$http.get(url).then(response => {
                     this.articles = response.data.data.data;
+                })
+            },
+            readDataArticlePictures() {
+                var url = this.$api + '/articlepictures';
+                this.$http.get(url).then(response => {
+                    this.articlepictures = response.data.data;
                 })
             },
             save() {
@@ -390,6 +440,11 @@
             showPhotos(item){
                 this.form.article_thumbnail = item.article_thumbnail;
                 this.dialogPhotos = true;
+            },
+
+            showPhotosArticlePictures(item){
+                this.form.article_picture = item.article_picture;
+                this.dialogPhotosArticlePictures = true;
             }
         },
         computed: {
@@ -400,6 +455,7 @@
         mounted() {
             this.readData();
             this.getAllAdmin();
+            this.readDataArticlePictures();
         },
     };
 </script>

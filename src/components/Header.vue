@@ -2,7 +2,7 @@
     <v-main>
         <header>
             <a class="logo">
-                  <img src="../assets/Logo48.png" alt="" style="object-fit:cover; width:100%; height:70px;">
+                  <img src="../assets/Logo48.png" alt="" style="object-fit:cover; width:100%; height:70px;" @click="LandingPage">
             </a>
             <div class="navigation">
                 <ul class="menu">
@@ -16,6 +16,7 @@
                     <li class="menu-item">
                         <a class="sub-btn">Article <i class="fas fa-angle-down"></i></a>
                         <ul class="sub-menu">
+                            <li class="sub-item"><a @click="Article">Article</a></li>
                             <li class="sub-item"><a>Article User</a></li>
                         </ul>
                     </li>
@@ -33,28 +34,13 @@
                         </ul>
                     </li>
                     <li class="menu-item"><a  @click="AboutPage">About</a></li>
-                    <li class="menu-item"><a>Sign In/Sign Up</a></li>
-                    <!-- <li class="menu-item"><a><a
-                                @click="detailProfile(customer.customer_id)">Hello, {{customer.customer_name}}</a></a>
-                    </li> -->
-                    <!-- <li class="menu-item"><a>Logout</a></li>
-                    <li class="menu-item"><a>Login</a></li> -->
-                    <!-- <li class="menu-item">
-                        <a class="sub-btn" href="#">With Sub-dropdown <i class="fas fa-angle-down"></i></a>
-                        <ul class="sub-menu">
-                            <li class="sub-item"><a href="#">Sub Item 01</a></li>
-                            <li class="sub-item"><a href="#">Sub Item 02</a></li>
-                            <li class="sub-item"><a href="#">Sub Item 03</a></li>
-                            <li class="sub-item"><a href="#">Sub Item 04</a></li>
-                            <li class="sub-item more">
-                                <a class="more-btn" href="#">More Items <i class="fas fa-angle-right"></i></a>
-                                <ul class="more-menu">
-                                    <li class="more-item"><a href="#">More Item 01</a></li>
-                                    <li class="more-item"><a href="#">More Item 02</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li> -->
+                    <li class="menu-item"><a v-if="user != ''"><a
+                                @click="detailProfile(user.user_id)">Hello, {{user.user_name}}</a></a>
+                    </li>
+                    <li class="menu-item"><a v-if="user != ''" @click="logout">Logout</a></li>
+                    <li class="menu-item"><a v-if="user == ''" @click="LoginPage">Sign In</a></li>
+                    <li class="menu-item"><a v-if="user == ''" @click="Register">Sign Up</a></li>
+
                 </ul>
             </div>
             <div class="menu-btn"></div>
@@ -156,7 +142,7 @@
 
         data() {
             return {
-                customer: [],
+                user: [],
             };
         },
         methods: {
@@ -184,9 +170,56 @@
                 this.$router.push({
                     name: 'AboutUs',
                 });
+            
             },
+            Article() {
+                this.$router.push({
+                    name: 'ArticlePage',
+                });
+            },
+            LandingPage() {
+                this.$router.push({
+                    name: 'LandingPage',
+                });
+            },
+            LoginPage() {
+                this.$router.push({
+                    name: 'LoginPage',
+                });
+            },
+            Register() {
+                this.$router.push({
+                    name: 'Register',
+                });
+            },
+            logout() {
+                if (localStorage.getItem('user_id') != null) {
+                    localStorage.removeItem('user_id');
+                    localStorage.removeItem('user_email');
+                    this.$router.push({
+                        name: 'LandingPage',
+                    });
+                    location.reload();
+                }
+            },
+            detailProfile(user_id) {
+                this.$router.push({
+                    name: 'DetailProfileUser',
+                    params: {
+                        id: user_id,
+                    }
+                });
+            }
         },
         mounted() {
+             if (localStorage.getItem('user_id') != null) {
+                this.$http.get(this.$api + '/user/' + localStorage.getItem('user_id'))
+                    .then(response => {
+                        this.user = response.data.data;
+                    }).catch(error => {
+                        console.log(error)
+                    })
+            }
         },
     }
 </script>

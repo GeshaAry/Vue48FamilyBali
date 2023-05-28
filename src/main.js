@@ -3,7 +3,10 @@ import App from './App.vue';
 import router from './router';
 import vuetify from '@/plugins/vuetify';
 import axios from 'axios';
+import VueTyperPlugin from 'vue-typer'
 
+
+Vue.use(VueTyperPlugin)
 Vue.component('pagination', require('laravel-vue-pagination'));
 
 

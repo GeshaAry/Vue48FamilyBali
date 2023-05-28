@@ -13,6 +13,19 @@ const router = new VueRouter({
   routes:[
       {
           path: "",
+          component: importComponent("Header"),
+          children:[
+               //LandingPage
+               {
+                path: "/",
+                name: "LandingPage",
+                meta: { title: 'Landing Page'},
+                component: importComponent("LandingPage"),
+              },
+          ],
+      },
+      {
+          path: "",
           component: importComponent("DashboardLayout"),
           children:[
               //Dashboard
@@ -133,13 +146,27 @@ const router = new VueRouter({
                 meta: { title: 'About Us'},
                 component: importComponent("AboutUs"),
               },
-              //About Us
+              //Article
               {
                 path: "/articlepage",
                 name: "ArticlePage",
                 meta: { title: 'Article Page'},
                 component: importComponent("ArticlePage"),
               },
+               //Detail Article
+               {
+                path: "/detailarticlepage/:id",
+                name: "DetailArticlePage",
+                meta: { title: 'Detail Article Page'},
+                component: importComponent("DetailArticlePage"),
+              },
+                //Detail Profile User
+                {
+                  path: "/detailprofile/:id",
+                  name: "DetailProfileUser",
+                  meta: { title: 'Detail Profile'},
+                  component: importComponent("DetailProfileUser"),
+                },
           ],
       },
       //Login Admin
@@ -148,6 +175,34 @@ const router = new VueRouter({
           name: "LoginAdmin",
           meta: { title: 'Admin Login Page'},
           component: importComponent("LoginAdmin"),
+        },
+      //Login User
+        {
+          path: "/login",
+          name: "LoginPage",
+          meta: { title: 'Login Page'},
+          component: importComponent("LoginPage"),
+        },
+        //Register
+        {
+          path: "/register",
+          name: "Register",
+          meta: { title: 'Register'},
+          component: importComponent("Register"),
+        },
+        //Reset Password
+        {
+          path: "/resetpassword/:email/:token",
+          name: "ResetPassword",
+          meta: { title: 'Reset Password'},
+          component: importComponent("ResetPassword"),
+        },
+        //Forgot Password
+        {
+          path: "/forgotpassword",
+          name: "EmailForgotPassword",
+          meta: { title: 'Forgot Password'},
+          component: importComponent("EmailForgotPassword"),
         },
   ],
 });
@@ -168,6 +223,18 @@ router.beforeEach((to, from, next) =>{
             name: "LoginAdmin"
         })
     }
+
+    //User
+    if(
+      to.name == 'DetailProfileUser' && localStorage.getItem("user_id") == '' && localStorage.getItem('user_email') == ''
+    ){
+        next({
+            name: "LandingPage"
+        })
+    }
+
+    console.log(localStorage.getItem("user_id"));
+    console.log(localStorage.getItem('user_email'))
   document.title = to.meta.title;
   next();
 });

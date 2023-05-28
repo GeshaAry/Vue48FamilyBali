@@ -87,8 +87,6 @@
                     .then(response => {
                         this.activity = response.data.data
                         this.member = response.data.data.member
-                        console.log("this.activity")
-                        console.log(this.activity)
                     })
                     .catch(error => {
                         console.log(error)

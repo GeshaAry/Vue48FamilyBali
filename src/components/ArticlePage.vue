@@ -26,7 +26,7 @@
                                 <p class="mt-4"
                                     style="text-align:justify; font-size:16px; color:#DA1F1A; padding-left:20px; padding-right:20px;" v-html="item.article_description.substring(0, 1200) +'...'">
                                 </p>
-                                <div class="button-detail-article">
+                                <div class="button-detail-article" @click="detailArticle(item.article_id)">
                                     Read More
                                 </div>
                             </v-col>
@@ -57,15 +57,15 @@
                         console.log(error)
                     })
             },
-            // detailMember(member_id) {
-            //     this.$router.push({
-            //         name: 'DetailMemberJKT48Page',
-            //         params: {
-            //             id: member_id,
-            //         }
+            detailArticle(article_id) {
+                this.$router.push({
+                    name: 'DetailArticlePage',
+                    params: {
+                        id: article_id,
+                    }
 
-            //     });
-            // },
+                });
+            },
         },
         mounted() {
             this.getResults();
@@ -140,6 +140,7 @@
         color: white;
         position:absolute; 
         bottom:0;
+        cursor: pointer;
     }
 
     #app {
