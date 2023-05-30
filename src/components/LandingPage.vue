@@ -9,13 +9,14 @@
                         <v-col cols="12" md="8" style="display:flex; justify-content:center; align-items:center;">
                             <div class="wrap-text-thumbnail">
                                 <v-col cols="12">
-                                    <p style="color:white; font-size:24px; text-align:left; padding-left:100px;" data-aos="fade-right" data-aos-delay="100">Welcome
+                                    <p style="color:white; font-size:24px; text-align:left; padding-left:100px;"
+                                        data-aos="fade-right" data-aos-delay="100">Welcome
                                         to Website</p>
-                                    <p
-                                        style="color:white; font-weight:700; font-size:56px; text-align:left; padding-left:100px;" data-aos="fade-right" data-aos-delay="200">
+                                    <p style="color:white; font-weight:700; font-size:56px; text-align:left; padding-left:100px;"
+                                        data-aos="fade-right" data-aos-delay="200">
                                         48 FAMILY BALI</p>
-                                    <p
-                                        style="color:white; font-size:24px; text-align:justify; padding-left:100px; padding-right:100px;" data-aos="fade-right" data-aos-delay="300">
+                                    <p style="color:white; font-size:24px; text-align:justify; padding-left:100px; padding-right:100px;"
+                                        data-aos="fade-right" data-aos-delay="300">
                                         Komunitas yang berbasis pada salah satu provinsi di indonesia yaitu Bali,
                                         terbentuk pada tahun 2012. Tercipta untuk mewadahi orang-orang yang memiliki
                                         minat yang sama yaitu mendukung Idol Ibukota JKT48.</p>
@@ -26,7 +27,8 @@
                             </div>
                         </v-col>
                         <v-col cols="12" md="4">
-                            <img src="../assets/Logo48.png" alt="" style="object-fit:cover; width:100%;" data-aos="zoom-in" data-aos-delay="300">
+                            <img src="../assets/Logo48.png" alt="" style="object-fit:cover; width:100%;"
+                                data-aos="zoom-in" data-aos-delay="300">
                         </v-col>
                     </v-row>
                 </div>
@@ -57,9 +59,9 @@
                                                             </div>
                                                             <p class="mt-4"
                                                                 style="color:black; font-size:24px; font-weight:700;">
-                                                                 {{ member[+index + i].member_name}}</p>
+                                                                {{ member[+index + i].member_name}}</p>
                                                             <v-chip class="mt-4 chip-member">
-                                                                 {{ member[+index + i].member_status}}
+                                                                {{ member[+index + i].member_status}}
                                                             </v-chip>
                                                         </div>
                                                     </v-col>
@@ -155,6 +157,53 @@
                             <div style="width:100%; height:2px; background-color: #DA1F1A"></div>
                         </v-col>
                     </v-row>
+                    <v-carousel hide-delimiters show-arrows-on-hover
+                        style="height: fit-content !important; display:flex; align-items:center; justify-content:center;">
+                        <template v-for="(item, index) in event">
+                            <v-carousel-item v-if="(index + 1) % columns === 1 || columns === 1" :key="index">
+                                <v-row>
+                                    <template v-for="(n, i) in columns">
+                                        <template v-if="(+index + i) < event.length">
+                                            <v-col :key="i">
+                                                <div class="event-content">
+                                                    <div class="thumbnail-event">
+                                                        <img :src="$baseUrl+'/storage/'+event[+index + i].event_thumbnail"
+                                                            style="object-fit: cover; width:100%; height:300px;" alt="">
+                                                    </div>
+                                                    <v-row>
+                                                        <v-col cols="12" class="mt-4" md="6">
+                                                            <p
+                                                                style="font-weight:700; font-size:24px; color:black; text-align:left; padding-left:20px;">
+                                                                {{ event[+index + i].event_name}}
+                                                            </p>
+                                                        </v-col>
+                                                        <v-col cols="12" class="mt-4" md="6">
+                                                            <p
+                                                                style="font-size:24px; color:black; text-align:right; padding-right:20px;">
+                                                                {{ event[+index + i].event_date}}
+                                                            </p>
+                                                        </v-col>
+                                                        <v-col cols="12" class="mt-4">
+                                                            <p style="font-size:20px; text-align:justify; color:#797979; float:left; padding-left:20px; padding-right:20px;"
+                                                                v-html="event[+index + i].event_description.substring(0, 200) +'...'">
+                                                            </p>
+                                                        </v-col>
+                                                        <div class="button-event"
+                                                            style="cursor:pointer; margin-left:20px;" @click="detailEvent(event[+index + i].event_id)">
+                                                            Detail
+                                                        </div>
+                                                        <div class="event-price">
+                                                                Rp.{{ event[+index + i].event_price}}
+                                                        </div>
+                                                    </v-row>
+                                                </div>
+                                            </v-col>
+                                        </template>
+                                    </template>
+                                </v-row>
+                            </v-carousel-item>
+                        </template>
+                    </v-carousel>
                 </v-layout>
             </v-container>
         </section>
@@ -182,6 +231,7 @@
             return {
                 article: [],
                 member: [],
+                event: [],
             };
         },
         methods: {
@@ -198,6 +248,14 @@
                     }
                 });
             },
+             detailEvent(event_id) {
+                this.$router.push({
+                    name: 'DetailEventPage',
+                    params: {
+                        id: event_id,
+                    }
+                });
+            },
         },
         mounted() {
             AOS.init();
@@ -209,10 +267,17 @@
                     console.log(error)
                 })
 
-                this.$http.get(this.$api + '/birthdaymember')
+            this.$http.get(this.$api + '/birthdaymember')
                 .then(response => {
                     this.member = response.data;
                     console.log(response)
+                }).catch(error => {
+                    console.log(error)
+                })
+
+            this.$http.get(this.$api + '/event')
+                .then(response => {
+                    this.event = response.data.data.data;
                 }).catch(error => {
                     console.log(error)
                 })
@@ -339,6 +404,54 @@
         position: absolute;
         bottom: 0;
         margin-bottom: 30px;
+    }
+
+    .event-content {
+        width: 560px;
+        height: 600px;
+        background-color: white;
+        margin: 20px;
+        box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);
+    }
+
+    .thumbnail-event {
+        width: 100%;
+        height: 300px;
+        background-color: antiquewhite;
+    }
+
+    .button-event {
+        width: 40%;
+        height: 50px;
+        background-color: #DA1F1A;
+        border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        color: white;
+        font-weight: 700;
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 30px;
+    }
+
+    .event-price {
+        width: 40%;
+        height: 50px;
+        background-color: #DA1F1A;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        color: white;
+        font-weight: 700;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        margin-bottom: 30px;
+        margin-right: 20px;
+
     }
 
     @keyframes typing-animation {

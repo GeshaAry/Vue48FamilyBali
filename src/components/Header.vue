@@ -8,7 +8,7 @@
                 <ul class="menu">
                     <div class="close-btn"></div>
                     <li class="menu-item">
-                        <a class="sub-btn">Event</a>
+                        <a class="sub-btn" @click="EventPage">Event</a>
                     </li>
                     <li class="menu-item">
                         <a class="sub-btn">Merchandise</a>
@@ -180,6 +180,11 @@
             LandingPage() {
                 this.$router.push({
                     name: 'LandingPage',
+                });
+            },
+            EventPage() {
+                this.$router.push({
+                    name: 'EventPage',
                 });
             },
             LoginPage() {

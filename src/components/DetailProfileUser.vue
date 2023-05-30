@@ -151,6 +151,31 @@
                             <p style="font-weight:700; color:#DA1F1A; font-size:32px; text-align:left;">Riwayat
                                 Pembelian E-Ticket</p>
                         </v-col>
+                          <v-card style="overflow:hidden; box-shadow:0px 2px 6px rgba(0,0,0,0.05); background-color:white; width:100%;">
+                            <v-card-title>
+                                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Transaction Event" single-line hide-details>
+                                </v-text-field>
+                                <v-spacer></v-spacer>
+                            </v-card-title>
+                            <v-data-table :headers="headers" :items="transactionevents" :search="search"
+                                style="background-color:white; color:black;">
+                                <template v-slot:[`item.activity_thumbnail`]="{item}">
+                                    <v-img :src="$baseUrl+'/storage/'+item.activity_thumbnail" height="50px" width="50px" 
+                                        style="object-fit:cover; border-radius:50%; cursor:pointer" @click="showPhotos(item)" />
+                                </template>
+
+                                <template v-slot:[`item.actions`]="{ item }">
+                                    <div style="display:flex; align-items:center;">
+                                    <div v-if="item.transactionevent_status == 'New Transaction'" style="background-color:green; width:80px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                        <span style="cursor: pointer;" @click="editHandler(item)">Edit</span>
+                                    </div>
+                                    <div v-if="item.transactionevent_status == 'New Transaction'" style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                        <span style="cursor: pointer;"  @click="deleteHandler(item)">Delete</span>
+                                    </div>
+                                    </div>
+                                </template>
+                            </v-data-table>
+                        </v-card>
                     </v-row>
                 </v-layout>
             </v-container>
@@ -256,6 +281,20 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="dialogConfirm" persistent max-width="400px">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Warning !</span>
+                </v-card-title>
+                <v-card-text>Are you sure to delete this data?</v-card-text>
+                <v-card-action>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="cancelDelete">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text @click="deleteData">Delete</v-btn>
+                </v-card-action>
+            </v-card>
+        </v-dialog>
+
     </v-main>
 </template>
 
@@ -264,10 +303,12 @@
         data() {
             return {
                 user: [],
+                transactionevents: [],
                 dialogPicture: false,
                 dialogMember: false,
                 dialogProfile: false,
                 dialogChangePassword: false,
+                dialogConfirm: false,
                 previewImageUrl: '',
                 snackbar: false,
                 load: false,
@@ -275,6 +316,7 @@
                 color: '',
                 itemsmember: [],
                 selectMember: '',
+                search: null,
                 form: {
                     selectMember: '',
                     user_name: '',
@@ -290,6 +332,49 @@
                     {
                         text: "Perempuan",
                         value: "Perempuan"
+                    }
+                ],
+                headers: [{
+                        text: "Transaction Event Id",
+                        align: "start",
+                        sortable: true,
+                        value: "transactionevent_id"
+                    },
+                    {
+                        text: "Name",
+                        value: "user.user_name"
+                    },
+                    {
+                        text: "Admin",
+                        value: "admin.admin_username"
+                    },
+                    {
+                        text: "Event Name",
+                        value: "event.event_name"
+                    },
+                    {
+                        text: "Date Buy",
+                        value: "transactionevent_datebuy"
+                    },
+                    {
+                        text: "Quantity",
+                        value: "transactionevent_quantity"
+                    },
+                    {
+                        text: "Total Price",
+                        value: "transactionevent_totalprice"
+                    },
+                    {
+                        text: "Proof Payment",
+                        value: "transactionevent_proofpayment"
+                    },
+                    {
+                        text: "Status",
+                        value: "transactionevent_status"
+                    },
+                    {
+                        text: "Actions",
+                        value: "actions"
                     }
                 ],
             };
@@ -366,7 +451,8 @@
             },
             editHandler(item) {
                 this.editId = localStorage.getItem('user_id');
-                this.dialogProfile = true;
+                this.selectMember = item.member.member_id;
+                this.dialogMember = true;
             },
 
             updateProfile() {
@@ -453,7 +539,45 @@
                 this.newPassword = '',
                 this.confirmNewPassword = '',
                 this.dialogChangePassword = false;
-            }
+            },
+
+            getTransactionEvent(){
+                this.$http.get(this.$api + '/transactionevent/user/' + this.$route.params.id, )
+                .then(response => {
+                    this.transactionevents = response.data.data;
+                    console.log(this.user);
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            deleteData() {
+                var url = this.$api + '/transactionevent/' + this.deleteId;
+                this.load = true;
+                this.$http.delete(url, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                }).then(response => {
+                    this.error_message = response.data.message;
+                    this.color = "green";
+                    this.snackbar = true;
+                    this.load = false;
+                    this.dialogConfirm = false
+                    location.reload();
+                }).catch(error => {
+                    this.error_message = error.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                    this.load = false;
+                });
+            },
+            deleteHandler(item) {
+                this.deleteId = item.transactionevent_id ;
+                this.dialogConfirm = true;
+            },
+            cancelDelete() {
+                this.dialogConfirm = false;
+            },
         },
         mounted() {
             this.$http.get(this.$api + '/user/' + this.$route.params.id, )
@@ -465,6 +589,7 @@
                 })
             
             this.getAllMember();
+            this.getTransactionEvent();
         }
 
     }

@@ -4,7 +4,7 @@
             permanent app>
             <v-list-item class="px-2" v-if="admin.admin_username == 'admin'">
                 <v-list-item-avatar>
-                    <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+                    <img src="../assets/Logo48.png" alt="">
                 </v-list-item-avatar>
 
                 <v-list-item-title style="color:white;">Admin</v-list-item-title>
@@ -65,6 +65,44 @@
                     </v-list-group>
                 </v-list-group>
 
+                <!-- Merchandise Group -->
+                <v-list-group :value="true" style="color:white !important">
+                    <template v-slot:activator>
+                        <v-list-item-icon>
+                            <v-icon class="icon" style="color:white !important">mdi-tshirt-crew</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title style="color:white;">Section Merchandise</v-list-item-title>
+                    </template>
+                    <v-list-group sub-group>
+                        <template v-slot:activator>
+                            <v-list-item-title style="color:white;">Merchandise Category</v-list-item-title>
+                        </template>
+                        <v-list-item v-for="item in itemsmerchandisecategory" :key="item.title" link tag="router-link"
+                            :to="item.to">
+                            <v-list-item-icon>
+                                <v-icon style="color:white !important">{{ item.icon }}</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title style="color:white !important">{{ item.title }}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-group>
+                    <v-list-group sub-group>
+                        <template v-slot:activator>
+                            <v-list-item-title style="color:white;">Merchandise</v-list-item-title>
+                        </template>
+                        <v-list-item v-for="item in itemsmerchandise" :key="item.title" link tag="router-link"
+                            :to="item.to">
+                            <v-list-item-icon>
+                                <v-icon style="color:white !important">{{ item.icon }}</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title style="color:white !important">{{ item.title }}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-group>
+                </v-list-group>
+
                 <!-- Member -->
                 <v-list-item v-for="item in itemsmember" :key="item.title" link tag="router-link" :to="item.to">
                     <v-list-item-icon>
@@ -95,8 +133,18 @@
                     </v-list-item-content>
                 </v-list-item>
 
-                <!-- Article User -->
+                <!-- Article -->
                 <v-list-item v-for="item in itemsarticle" :key="item.title" link tag="router-link" :to="item.to">
+                    <v-list-item-icon>
+                        <v-icon style="color:white !important">{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title style="color:white !important">{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
+                <!-- Event -->
+                <v-list-item v-for="item in itemsevent" :key="item.title" link tag="router-link" :to="item.to">
                     <v-list-item-icon>
                         <v-icon style="color:white !important">{{ item.icon }}</v-icon>
                     </v-list-item-icon>
@@ -125,11 +173,6 @@
                         title: 'Dashboard',
                         to: "/dashboard",
                         icon: 'mdi-home'
-                    },
-                    {
-                        title: 'Merchandise Category',
-                        to: "/merchandisecategory",
-                        icon: 'mdi-tshirt-crew'
                     },
                 ],
                 itemsgallery: [{
@@ -171,6 +214,29 @@
                         title: 'Article',
                         to: "/article",
                         icon: 'mdi-newspaper-plus'
+                    },
+                ],
+                itemsmerchandise:[
+                    {
+                        title: 'Merchandise',
+                        to: "/merchandise",
+                        icon: 'mdi-tshirt-crew'
+                    },
+                ],
+
+                itemsmerchandisecategory:[
+                    {
+                        title: 'Merchandise Category',
+                        to: "/merchandisecategory",
+                        icon: 'mdi-tshirt-crew'
+                    },
+                ],
+                
+                itemsevent:[
+                    {
+                        title: 'Event',
+                        to: "/event",
+                        icon: 'mdi-calendar-plus'
                     },
                 ],
                 mini: true,

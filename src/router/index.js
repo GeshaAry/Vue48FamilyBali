@@ -84,6 +84,20 @@ const router = new VueRouter({
                 meta: { title: 'Detail Activity'},
                 component: importComponent("DataAdmin/DetailActivity"),
               },
+              //Merchandise
+              {
+                path: "/merchandise",
+                name: "Merchandise",
+                meta: { title: 'Merchandise'},
+                component: importComponent("DataAdmin/Merchandise"),
+              },
+               //Event
+               {
+                path: "/event",
+                name: "Event",
+                meta: { title: 'Event'},
+                component: importComponent("DataAdmin/Event"),
+              },
           ],        
       },
       {
@@ -160,13 +174,27 @@ const router = new VueRouter({
                 meta: { title: 'Detail Article Page'},
                 component: importComponent("DetailArticlePage"),
               },
-                //Detail Profile User
-                {
-                  path: "/detailprofile/:id",
-                  name: "DetailProfileUser",
-                  meta: { title: 'Detail Profile'},
-                  component: importComponent("DetailProfileUser"),
-                },
+              //Detail Profile User
+              {
+                path: "/detailprofile/:id",
+                name: "DetailProfileUser",
+                meta: { title: 'Detail Profile'},
+                component: importComponent("DetailProfileUser"),
+              },
+               //Detail Event
+               {
+                path: "/detailevent/:id",
+                name: "DetailEventPage",
+                meta: { title: 'Detail Event'},
+                component: importComponent("DetailEventPage"),
+              },
+               //Event
+               {
+                path: "/eventpage",
+                name: "EventPage",
+                meta: { title: 'Event Page'},
+                component: importComponent("EventPage"),
+              },
           ],
       },
       //Login Admin
@@ -226,15 +254,13 @@ router.beforeEach((to, from, next) =>{
 
     //User
     if(
-      to.name == 'DetailProfileUser' && localStorage.getItem("user_id") == '' && localStorage.getItem('user_email') == ''
+      to.name == 'DetailProfileUser' && (localStorage.getItem("user_id") == null || localStorage.getItem('user_email') == null)
     ){
         next({
             name: "LandingPage"
         })
+       location.reload();
     }
-
-    console.log(localStorage.getItem("user_id"));
-    console.log(localStorage.getItem('user_email'))
   document.title = to.meta.title;
   next();
 });
