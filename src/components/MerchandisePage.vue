@@ -3,50 +3,48 @@
         <section>
             <div class="thumbnail">
                 <img src="../assets/wallpaperlogin.png" style="object-fit: cover; width:100%; height:500px;" alt="">
-                <div class="centered">Event</div>
+                <div class="centered">Merchandise</div>
             </div>
         </section>
         <section style="display:flex; justify-content:center; align-items:center;">
             <v-container grid-list-xl>
                 <v-layout row wrap justify-center class="my-5">
-                    <div class="event-content" v-for="(item, index) in event.data" :key="index">
-                        <div class="thumbnail-event">
-                            <img :src="$baseUrl+'/storage/'+item.event_thumbnail"
+                    <div class="merchandise-content" v-for="(item, index) in merchandise.data" :key="index">
+                        <div class="thumbnail-merchandise" v-if="item.merchandise_picture != null">
+                            <img :src="$baseUrl+'/storage/'+item.merchandise_picture"
                                 style="object-fit: cover; width:100%; height:300px;" alt="">
+                        </div>
+                        <div class="thumbnail-merchandise" v-else>
+                            <p>No Photo</p>
                         </div>
                         <v-row>
                             <v-col cols="12" class="mt-4" md="6">
                                 <p
                                     style="font-weight:700; font-size:24px; color:black; text-align:left; padding-left:20px;">
-                                    {{ item.event_name}}
+                                    {{ item.merchandise_name}}
                                 </p>
                             </v-col>
                             <v-col cols="12" class="mt-4" md="6">
-                                <p class="text-event-date" style="font-size:24px; color:black; text-align:right; padding-right:20px;">
-                                    {{ item.event_date}}
+                                <p class="text-merchandise-category" style="font-size:16px; color:#797979; text-align:right; padding-right:20px;">
+                                    {{ item.merchandise_category.merchandisectg_name}}
                                 </p>
                             </v-col>
                             <v-col cols="12" class="mt-4">
                                 <p style="font-size:20px; text-align:justify; color:#797979; float:left; padding-left:20px; padding-right:20px;"
-                                    v-html="item.event_description.substring(0, 200) +'...'">
+                                    v-html="item.merchandise_description.substring(0, 200) +'...'">
                                 </p>
                             </v-col>
-                            <v-col cols="12" md="6">
-                                <div class="button-event" style="cursor:pointer; margin-left:20px;"
-                                    @click="detailEvent(item.event_id)">
+                            <v-col cols="12" class="mt-4">
+                                <div class="button-merchandise" style="cursor:pointer; margin-left:20px;"
+                                    @click="detailMerchandise(item.merchandise_id)">
                                     Detail
-                                </div>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <div class="event-price">
-                                    Rp.{{ item.event_price}}
                                 </div>
                             </v-col>
                         </v-row>
                     </div>
                 </v-layout>
                 <div class="d-flex justify-content-center mb-8">
-                    <pagination :data="event" @pagination-change-page="getResults"></pagination>
+                    <pagination :data="merchandise" @pagination-change-page="getResults"></pagination>
                 </div>
             </v-container>
         </section>
@@ -57,23 +55,23 @@
     export default {
         data() {
             return {
-                event: [],
+                merchandise: [],
             };
         },
         methods: {
             getResults(page = 1) {
-                this.$http.get(this.$api + '/event?limit=9&page=' + page)
+                this.$http.get(this.$api + '/merchandise?limit=9&page=' + page)
                     .then(response => {
-                        this.event = response.data.data;
+                        this.merchandise = response.data.data;
                     }).catch(error => {
                         console.log(error)
                     })
             },
-            detailEvent(event_id) {
+            detailMerchandise(merchandise_id) {
                 this.$router.push({
-                    name: 'DetailEventPage',
+                    name: 'DetailMerchandisePage',
                     params: {
-                        id: event_id,
+                        id: merchandise_id,
                     }
                 });
             },
@@ -109,7 +107,7 @@
         font-weight: 700;
     }
 
-    .event-content {
+    .merchandise-content {
         width: 560px;
         height: auto;
         background-color: white;
@@ -118,14 +116,18 @@
         padding-bottom: 30px;
     }
 
-    .thumbnail-event {
+    .thumbnail-merchandise {
         width: 100%;
         height: 300px;
-        background-color: antiquewhite;
+        background-color: #DA1F1A;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
     }
 
-    .button-event {
-        width: 80%;
+    .button-merchandise {
+        width: 200px;
         height: 50px;
         background-color: #DA1F1A;
         border-radius: 50px;
@@ -136,19 +138,13 @@
         color: white;
         font-weight: 700;
     }
-
-    .event-price {
-        width: 80%;
-        height: 50px;
-        background-color: #DA1F1A;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 20px;
-        color: white;
-        float: right;
+     #app {
+        margin-top: 0 !important;
     }
 
+    .v-application p {
+        margin-bottom: 0px;
+    }
 
     #app {
         margin-top: 0 !important;
@@ -158,18 +154,10 @@
         .slideCol {
             padding: 0;
         }
-        .text-event-date{
+
+        .text-merchandise-category{
             text-align: left !important;
-            padding-left: 20px !important;
-        }
-
-        .event-price{
-            margin-top: 20px !important;
-            float: left !important;
-        }
-
-        .button-event {
-            width: 40%;
+            padding-left: 20px  !important;
         }
     }
 </style>

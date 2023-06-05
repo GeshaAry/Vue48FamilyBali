@@ -11,13 +11,13 @@
                         <a class="sub-btn" @click="EventPage">Event</a>
                     </li>
                     <li class="menu-item">
-                        <a class="sub-btn">Merchandise</a>
+                        <a class="sub-btn" @click="MerchandisePage">Merchandise</a>
                     </li>
                     <li class="menu-item">
                         <a class="sub-btn">Article <i class="fas fa-angle-down"></i></a>
                         <ul class="sub-menu">
                             <li class="sub-item"><a @click="Article">Article</a></li>
-                            <li class="sub-item"><a>Article User</a></li>
+                            <li class="sub-item"><a @click="ArticleUser">Article User</a></li>
                         </ul>
                     </li>
                     <li class="menu-item">
@@ -54,17 +54,19 @@
                     </v-col>
                     <v-col cols="12" md="3">
                         <ul class="ul-detailfooter mx-4 my-4">
-                            <li class="li-footer">Event</li>
-                            <li class="li-footer">Merchandise</li>
-                            <li class="li-footer">Article</li>
-                            <li class="li-footer">Member</li>
+                            <li class="li-footer" @click="EventPageFooter">Event</li>
+                            <li class="li-footer" @click="MerchandisePageFooter">Merchandise</li>
+                            <li class="li-footer" @click="ArticleFooter">Article</li>
+                            <li class="li-footer" @click="ArticleUserFooter">Article User</li>
+                            <li class="li-footer" @click="MemberJKT48Footer">Member</li>
                         </ul>
                     </v-col>
                     <v-col cols="12" md="3" >
                         <ul class="ul-detailfooter mx-4 my-4">
-                            <li class="li-footer">Activity</li>
-                            <li class="li-footer">Gallery</li>
-                            <li class="li-footer">About</li>
+                            <li class="li-footer" @click="ActivityPageFooter">Activity</li>
+                            <li class="li-footer" @click="GalleryPageFooter">Gallery</li>
+                            <li class="li-footer" @click="VideoPageFooter">Video</li>
+                            <li class="li-footer" @click="AboutPageFooter">About</li>
                         </ul>
                     </v-col>
                     <v-col cols="12" md="3">
@@ -72,20 +74,20 @@
                         <v-row style="display:flex; justify-content:center;">
                             <v-col cols="2" style="display:flex; justify-content:center;">
                                 <div class="social-media">
-                                 <img src="../assets/twitter.png" alt=""
-                                    style="object-fit:cover; width:60%; height:auto;">
+                                <a href="https://twitter.com/48FamilyBali"><img src="../assets/twitter.png" alt=""
+                                        style="object-fit:cover; width:60%; height:auto;"></a>
                                 </div>
                             </v-col>
                               <v-col cols="2" style="display:flex; justify-content:center;">
                                 <div class="social-media">
-                                  <img src="../assets/instagram.png" alt=""
-                                    style="object-fit:cover; width:60%; height:auto;">
+                                  <a href="https://www.instagram.com/48familybali/"><img src="../assets/instagram.png" alt=""
+                                    style="object-fit:cover; width:60%; height:auto;"></a>
                                 </div>
                             </v-col>
                               <v-col cols="2" style="display:flex; justify-content:center;">
                                 <div class="social-media">
-                                  <img src="../assets/discord.png" alt=""
-                                    style="object-fit:cover; width:60%; height:auto;">
+                                  <a href="https://discord.gg/SHcDJFnt"><img src="../assets/discord.png" alt=""
+                                    style="object-fit:cover; width:60%; height:auto;"></a>
                                 </div>
                             </v-col>
                         </v-row>
@@ -151,7 +153,17 @@
                     name: 'MemberJKT48Page',
                 });
             },
+            MemberJKT48Footer() {
+                this.$router.push({
+                    name: 'MemberJKT48Page',
+                });
+            },
             GalleryPage() {
+                this.$router.push({
+                    name: 'GalleryPage',
+                });
+            },
+            GalleryPageFooter() {
                 this.$router.push({
                     name: 'GalleryPage',
                 });
@@ -161,7 +173,17 @@
                     name: 'VideoPage',
                 });
             },
+            VideoPageFooter() {
+                this.$router.push({
+                    name: 'VideoPage',
+                });
+            },
             ActivityPage() {
+                this.$router.push({
+                    name: 'ActivityPage',
+                });
+            },
+            ActivityPageFooter() {
                 this.$router.push({
                     name: 'ActivityPage',
                 });
@@ -172,9 +194,30 @@
                 });
             
             },
+            AboutPageFooter() {
+                this.$router.push({
+                    name: 'AboutUs',
+                });
+            
+            },
             Article() {
                 this.$router.push({
                     name: 'ArticlePage',
+                });
+            },
+            ArticleUser() {
+                this.$router.push({
+                    name: 'ArticleUserPage',
+                });
+            },
+            ArticleFooter() {
+                this.$router.push({
+                    name: 'ArticlePage',
+                });
+            },
+            ArticleUserFooter() {
+                this.$router.push({
+                    name: 'ArticleUserPage',
                 });
             },
             LandingPage() {
@@ -187,6 +230,11 @@
                     name: 'EventPage',
                 });
             },
+            EventPageFooter() {
+                this.$router.push({
+                    name: 'EventPage',
+                });
+            },
             LoginPage() {
                 this.$router.push({
                     name: 'LoginPage',
@@ -195,6 +243,16 @@
             Register() {
                 this.$router.push({
                     name: 'Register',
+                });
+            },
+            MerchandisePage() {
+                this.$router.push({
+                    name: 'MerchandisePage',
+                });
+            },
+            MerchandisePageFooter() {
+                this.$router.push({
+                    name: 'MerchandisePage',
                 });
             },
             logout() {

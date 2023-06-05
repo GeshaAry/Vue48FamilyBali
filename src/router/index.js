@@ -77,6 +77,13 @@ const router = new VueRouter({
                 meta: { title: 'Article'},
                 component: importComponent("DataAdmin/Article"),
               },
+              //Article User
+              {
+                path: "/articleuser",
+                name: "ArticleUser",
+                meta: { title: 'Article User'},
+                component: importComponent("DataAdmin/ArticleUser"),
+              },
                //Detail Activity
                {
                 path: "/detailactivity",
@@ -97,6 +104,27 @@ const router = new VueRouter({
                 name: "Event",
                 meta: { title: 'Event'},
                 component: importComponent("DataAdmin/Event"),
+              },
+              //Transaction event
+              {
+                path: "/transactioneventadmin",
+                name: "TransactionEvent",
+                meta: { title: 'Transaction Event'},
+                component: importComponent("DataAdmin/TransactionEvent"),
+              },
+               //Transaction Merchandise
+               {
+                path: "/transactionmerchandiseadmin",
+                name: "TransactionMerchandise",
+                meta: { title: 'Transaction Merchandise'},
+                component: importComponent("DataAdmin/TransactionMerchandise"),
+              },
+               //Report
+               {
+                path: "/report",
+                name: "Report",
+                meta: { title: 'Report'},
+                component: importComponent("DataAdmin/Report"),
               },
           ],        
       },
@@ -195,6 +223,41 @@ const router = new VueRouter({
                 meta: { title: 'Event Page'},
                 component: importComponent("EventPage"),
               },
+               //Detail Merchandise
+               {
+                path: "/detailmerchandise/:id",
+                name: "DetailMerchandisePage",
+                meta: { title: 'Detail Merchandise'},
+                component: importComponent("DetailMerchandisePage"),
+              },
+               //Merchandise Page
+               {
+                path: "/merchandisepage",
+                name: "MerchandisePage",
+                meta: { title: 'Merchandise Page'},
+                component: importComponent("MerchandisePage"),
+              },
+              //Article User Dashboard
+              {
+              path: "/articleuserdashboard/:id",
+              name: "ArticleUserDashboard",
+              meta: { title: 'My Article'},
+              component: importComponent("ArticleUserDashboard"),
+             },
+              //Detail Article User
+              {
+              path: "/detailarticleuser/:id",
+              name: "DetailArticleUser",
+              meta: { title: 'Detail Article User'},
+              component: importComponent("DetailArticleUser"),
+              },
+              //Article User Page
+              {
+                path: "/articleuserpage",
+                name: "ArticleUserPage",
+                meta: { title: 'Article User Page'},
+                component: importComponent("ArticleUserPage"),
+              },
           ],
       },
       //Login Admin
@@ -245,7 +308,12 @@ router.beforeEach((to, from, next) =>{
       to.name == 'MerchandiseCategory' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin'||
       to.name == 'Video' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' ||
       to.name == 'Article' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' ||
-      to.name == 'DetailActivity' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' 
+      to.name == 'DetailActivity' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' ||
+      to.name == 'Merchandise' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' ||
+      to.name == 'Event' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' ||
+      to.name == 'TransactionEvent' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' ||
+      to.name == 'TransactionMerchandise' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin' ||
+      to.name == 'Report' && localStorage.getItem("admin_id") != '' && localStorage.getItem('admin_username') != 'admin'
     ){
         next({
             name: "LoginAdmin"
@@ -261,6 +329,7 @@ router.beforeEach((to, from, next) =>{
         })
        location.reload();
     }
+    
   document.title = to.meta.title;
   next();
 });

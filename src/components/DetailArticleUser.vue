@@ -5,43 +5,21 @@
                 <v-layout row wrap justify-center class="my-5">
                     <div class="content-article" style="width:100%; max-width:1500px;">
                         <v-layout row wrap justify-center class="my-5">
-                            <img :src="$baseUrl+'/storage/'+article.article_thumbnail" class="image-article"
+                            <img :src="$baseUrl+'/storage/'+articleuser.articleuser_thumbnail" class="image-article"
                                 style="width:100%; max-width:1500px; height:auto; border-radius: 20px 20px 0px 0px; margin-top:-20px;"
                                 alt="">
                             <p class="title-article"
                                 style="font-size:50px; color:black; font-weight:800; margin-top:20px;">
-                                {{ article.article_title }}</p>
+                                {{ articleuser.articleuser_title }}</p>
                         </v-layout>
                         <v-layout row wrap justify-center class="my-5" style="flex-flow:column;">
                             <p style="font-size:20px; color:black; margin-top:-20px"><i>Posted By
-                                    {{ article.admin.admin_username }}</i></p>
+                                    {{ articleuser.user.user_name }}</i></p>
                         </v-layout>
                         <v-layout row wrap justify-center class="my-5">
                             <div class="bottomborder"></div>
                         </v-layout>
-                        <v-layout row wrap justify-center class="my-5">
-                            <v-carousel hide-delimiters show-arrows-on-hover cycle :interval="100000"
-                                style="height: fit-content !important; display:flex; align-items:center; justify-content:center;">
-                                <template v-for="(item, index) in articlepictures">
-                                    <v-carousel-item v-if="(index + 1) % columns === 1 || columns === 1" :key="index">
-                                        <v-row>
-                                            <template v-for="(n, i) in columns">
-                                                <template v-if="(+index + i) < articlepictures.length">
-                                                    <v-col :key="i">
-                                                        <div style="width:400px; height:auto; margin:20px; ">
-                                                            <img :src="$baseUrl+'/storage/'+articlepictures[+index + i].article_picture"
-                                                                style="object-fit: cover; width:100%; height:300px;"
-                                                                alt="">
-                                                        </div>
-                                                    </v-col>
-                                                </template>
-                                            </template>
-                                        </v-row>
-                                    </v-carousel-item>
-                                </template>
-                            </v-carousel>
-                        </v-layout>
-                        <p class="text-boatschedule" v-html="article.article_description"></p>
+                        <p class="text-boatschedule" v-html="articleuser.articleuser_description"></p>
                     </div>
                 </v-layout>
             </v-container>
@@ -79,7 +57,7 @@
                                                         {{ item.created_at }}</p>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <p style="color:black; text-align:left;">{{ item.article_comment }}
+                                                    <p style="color:black; text-align:left;">{{ item.articleuser_comment }}
                                                     </p>
                                                 </v-col>
                                                 <v-col cols="12">
@@ -179,8 +157,7 @@
     export default {
         data() {
             return {
-                article: {},
-                articlepictures: [],
+                articleuser: [],
                 user: [],
                 dialog: false,
                 dialogConfirm: false,
@@ -211,11 +188,11 @@
                 }
             },
             saveComment() {
-                this.comment.append('article_comment', this.form.article_comment);
-                this.comment.append('article_id', this.$route.params.id);
+                this.comment.append('articleuser_comment', this.form.article_comment);
+                this.comment.append('articleuser_id', this.$route.params.id);
                 this.comment.append('user_id', localStorage.getItem('user_id'));
 
-                var url = this.$api + '/article/' + this.$route.params.id + '/comment';
+                var url = this.$api + '/articleuser/' + this.$route.params.id + '/comment';
                 this.load = true;
 
                 this.$http.post(url, this.comment, {
@@ -239,11 +216,11 @@
                 });
             },
              update() {
-                this.comment.append('article_comment', this.form.article_comment_update);
-                this.comment.append('article_id', this.$route.params.id);
+                this.comment.append('articleuser_comment', this.form.article_comment_update);
+                this.comment.append('articleuser_id', this.$route.params.id);
                 this.comment.append('user_id', localStorage.getItem('user_id'));
                 this.comment.append('_method', 'PUT');
-                var url = this.$api + '/article/' + this.$route.params.id + '/comment/' + this.editId;
+                var url = this.$api + '/articleuser/' + this.$route.params.id + '/comment/' + this.editId;
                 this.load = true;
                 this.$http.post(url, this.comment, {
                     headers: {
@@ -267,7 +244,7 @@
                 });
             },
             deleteData() {
-                var url = this.$api + '/article/' + this.$route.params.id + '/comment/' + this.deleteId;
+                var url = this.$api + '/articleuser/' + this.$route.params.id + '/comment/' + this.deleteId;
                 this.load = true;
                 this.$http.delete(url, {
                     headers: {
@@ -292,12 +269,12 @@
             },
             editItem(item) {
                 this.inputType = 'Ubah';
-                this.editId = item.articlecomment_id;
-                this.form.article_comment_update = item.article_comment;
+                this.editId = item.articleusercomment_id;
+                this.form.article_comment_update = item.articleuser_comment;
                 this.dialog = true;
             },
             deleteItem(item) {
-                this.deleteId = item.articlecomment_id;
+                this.deleteId = item.articleusercomment_id;
                 this.dialogConfirm = true;
             },
             cancel() {
@@ -312,29 +289,27 @@
                 this.dialogConfirm = false;
             },
             resetForm() {
-               this.form.event_comment = '';
+               this.form.article_comment = '';
             },
             cancelDelete() {
                 this.dialogConfirm = false;
             },
             getIdDetail() {
-                console.log(this.$route.params.id);
-                this.$http.get(this.$api + '/article/' + this.$route.params.id, {
+                this.$http.get(this.$api + '/showarticleuser/' + this.$route.params.id, {
                         headers: {
                             'Authorization': 'Bearer ' + localStorage.getItem('token')
                         }
 
                     })
                     .then(response => {
-                        this.article = response.data.data
-                        this.articlepictures = response.data.data.article_pictures
+                        this.articleuser = response.data.data
                     })
                     .catch(error => {
                         console.log(error)
                     })
             },
              getArticleComment() {
-                this.$http.get(this.$api + '/article/' + this.$route.params.id + '/comment', {
+                this.$http.get(this.$api + '/articleuser/' + this.$route.params.id + '/comment', {
                         headers: {
                             'Authorization': 'Bearer ' + localStorage.getItem('token')
                         }
@@ -354,21 +329,6 @@
             this.getIdDetail();
             this.getArticleComment();
             this.currentUser = localStorage.getItem('user_id');
-        },
-        computed: {
-            columns() {
-                if (this.$vuetify.breakpoint.xl) {
-                    return 3;
-                }
-                if (this.$vuetify.breakpoint.lg) {
-                    return 3;
-                }
-                if (this.$vuetify.breakpoint.md) {
-                    return 2;
-                }
-
-                return 1;
-            }
         }
     }
 </script>

@@ -40,12 +40,12 @@
                 style="background-color:white; color:black;">
                 <template v-slot:[`item.article_picture`]="{item}">
                     <v-img :src="$baseUrl+'/storage/'+item.article_picture" height="50px" width="50px" 
-                        style="object-fit:cover; border-radius:50%; cursor:pointer" @click="showPhotos(item)" />
+                        style="object-fit:cover; border-radius:50%; cursor:pointer" @click="showPhotosArticlePictures(item)" />
                 </template>
                 <template v-slot:[`item.actions`]="{ item }">
                     <div style="display:flex; align-items:center;">
                     <div style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
-                        <span style="cursor: pointer;"  @click="deleteHandler(item)">Delete</span>
+                        <span style="cursor: pointer;"  @click="deleteHandlerArticlePictures(item)">Delete</span>
                     </div>
                     </div>
                 </template>
@@ -99,11 +99,11 @@
                                 <v-card-title>
                                     <span class="headline">Edit Article</span>
                                 </v-card-title>
-                                <!-- <center>
+                                <center>
                                   <v-img width="500px" style="border-radius:30px;"
                                     :src="previewImageUrl == '' ? $baseUrl+'/storage/'+form.article_thumbnail : previewImageUrl"
                                     id="previewImage" class="mb-5"></v-img>
-                                </center> -->
+                                </center>
                                  <v-file-input rounded filled prepend-icon="mdi-camera" label="Upload Thumbnail" id="filePhotos"
                                     ref="filePhotosGallery"></v-file-input>
                                 <span>Upload maximum size file picture: 1 MB</span>
@@ -241,6 +241,10 @@
                         text: "Article Pictures",
                         value: "article_picture"
                     },
+                    {
+                        text: "Actions",
+                        value: "actions"
+                    }
                 ],
                 article: new FormData,
                 articles: [],
@@ -355,8 +359,6 @@
 
                 var url = this.$api + '/article/' + this.editId;
                 this.load = true;
-
-
                 this.$http.post(url, data, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -406,9 +408,14 @@
                 this.editId = item.article_id;
                 this.form.article_title = item.article_title;
                 this.form.article_description = item.article_description;
+                this.form.article_thumbnail = item.article_thumbnail;
                 this.dialog = true;
             },
             deleteHandler(item) {
+                this.deleteId = item.article_id;
+                this.dialogConfirm = true;
+            },
+            deleteHandlerArticlePictures(item) {
                 this.deleteId = item.article_id;
                 this.dialogConfirm = true;
             },

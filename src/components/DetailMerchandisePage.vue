@@ -3,7 +3,7 @@
         <section>
             <div class="thumbnail">
                 <img src="../assets/wallpaperlogin.png" style="object-fit: cover; width:100%; height:500px;" alt="">
-                <div class="centered">Event</div>
+                <div class="centered">Merchandise</div>
             </div>
         </section>
         <section style="display:flex; justify-content:center; align-items:center;">
@@ -13,29 +13,24 @@
                         <v-row>
                             <v-col cols="12" md="6" style="display:flex; justify-content:center; align-items:center;">
                                 <div class="mt-4" style="background-color:black; width:90%; height:400px">
-                                    <img :src="$baseUrl+'/storage/'+event.event_thumbnail"
+                                    <img :src="$baseUrl+'/storage/'+merchandise.merchandise_picture"
                                         style="object-fit: cover; width:100%; height:400px;" class="pictures" alt="">
                                 </div>
                             </v-col>
                             <v-col cols="12" md="6">
                                 <p class="mt-4 sub-text-detail-event"
                                     style="font-weight:700; color: #DA1F1A; font-size:50px; text-align:left;">
-                                    {{ event.event_name }}</p>
-                                <p class="mt-2 sub-text-detail-event"
-                                    style="color: #DA1F1A; text-align:left; font-size:30px;">
-                                    Rp.{{ event.event_price }}</p>
-                                <p class="mt-2 sub-text-detail-event"
+                                    {{ merchandise.merchandise_name }}</p>
+                                 <v-chip class="mt-2 chip-merchandise">
+                                    {{ merchandise.merchandise_category.merchandisectg_name}}
+                                </v-chip>
+                                 <p class="mt-4 sub-text-detail-event"
                                     style="color: #DA1F1A; text-align:justify; font-size:15px; padding-right:20px;">
-                                    Location</p>
-                                <p class="mt-2 sub-text-detail-event"
-                                    style=" font-weight:700; color: #DA1F1A; text-align:justify; font-size:20px; padding-right:20px;">
-                                    {{ event.event_location }}</p>
-                                <p class="mt-2 sub-text-detail-event"
-                                    style="color: #DA1F1A; text-align:justify; font-size:15px; padding-right:20px;">
-                                    Date and Time</p>
-                                <p class="mt-2 sub-text-detail-event"
-                                    style=" font-weight:700; color: #DA1F1A; text-align:justify; font-size:20px; padding-right:20px;">
-                                    {{ event.event_date }} - {{event.event_time}}</p>
+                                    Choose Size</p>
+                                <v-select v-model="selectSize" :items="itemsmerchandise"
+                                    item-value="merchandisevar_id" label="Size" persistent-hint
+                                    class="mt-2" style="width:400px;" required>
+                                </v-select>
                                 <p class="mt-2 sub-text-detail-event"
                                     style="color: #DA1F1A; text-align:justify; font-size:15px; padding-right:20px;">
                                     Quantity</p>
@@ -44,7 +39,7 @@
                                 <div v-if="this.currentUser != null " class="button-buy" @click="detailTransaction()">
                                     Buy Now
                                 </div>
-                                <p v-else class="mt-2 sub-text-detail-event"
+                                 <p v-else class="mt-2 sub-text-detail-event"
                                     style="color: #DA1F1A; text-align:justify; font-size:15px; padding-right:20px;">
                                     Please login if you want to buy</p>
                             </v-col>
@@ -56,12 +51,12 @@
                                     Description</p>
                                 <p class="mt-4"
                                     style="color: #DA1F1A; font-size:16px; text-align:justify; padding-left:30px; padding-right:30px;">
-                                    {{ event.event_description }} </p>
+                                    {{ merchandise.merchandise_description }} </p>
 
                                 <p class="mt-4"
                                     style="color: #DA1F1A; font-size:16px; text-align:justify; padding-left:30px; padding-right:30px;">
-                                    Transfer <br> {{ event.event_bankname }} {{ event.event_accountnumber }} -
-                                    {{event.event_nameaccount}}</p>
+                                    Transfer <br> {{ merchandise.merchandise_bankname }} {{ merchandise.merchandise_accountnumber }} -
+                                    {{merchandise.merchandise_nameaccount}}</p>
 
                             </v-col>
                         </v-row>
@@ -85,26 +80,20 @@
                             <img src="../assets/Logo48.png" alt="" style=" object-fit:cover; width:100%; height:60px;">
                         </div>
                     </v-col>
-                    <!-- section title -->
+                    
                     <v-col cols="12">
-                        <p style="font-weight:700; font-size:42px; color:#DA1F1A; text-align:center;">E-TICKET EVENT</p>
+                        <p style="font-weight:700; font-size:42px; color:#DA1F1A; text-align:center;">MERCHANDISE</p>
                     </v-col>
-                    <v-col cols="12" md="2" class="mt-4">
-                        <p style="font-weight:700; font-size:14px; color:#DA1F1A; text-align:center;">EVENT NAME</p>
+                    <v-col cols="12" md="3" class="mt-4">
+                        <p style="font-weight:700; font-size:14px; color:#DA1F1A; text-align:center;">MERCHANDISE NAME</p>
                     </v-col>
-                    <v-col cols="12" md="2" class="mt-4">
-                        <p style="font-weight:700; font-size:14px; color:#DA1F1A; text-align:center;">EVENT DATE</p>
+                    <v-col cols="12" md="3" class="mt-4">
+                        <p style="font-weight:700; font-size:14px; color:#DA1F1A; text-align:center;">MERCHANDISE SIZE</p>
                     </v-col>
-                    <v-col cols="12" md="2" class="mt-4">
-                        <p style="font-weight:700; font-size:14px; color:#DA1F1A; text-align:center;">EVENT TIME</p>
+                    <v-col cols="12" md="3" class="mt-4">
+                        <p style="font-weight:700; font-size:14px; color:#DA1F1A; text-align:center;">MERCHANDISE PRICE</p>
                     </v-col>
-                    <v-col cols="12" md="2" class="mt-4">
-                        <p style="font-weight:700; font-size:14px; color:#DA1F1A; text-align:center;">EVENT LOCATION</p>
-                    </v-col>
-                    <v-col cols="12" md="2" class="mt-4">
-                        <p style="font-weight:700; font-size:14px; color:#DA1F1A; text-align:center;">EVENT PRICE</p>
-                    </v-col>
-                    <v-col cols="12" md="2" class="mt-4">
+                    <v-col cols="12" md="3" class="mt-4">
                         <p style="font-weight:700; font-size:14px; color:#DA1F1A; text-align:center;">QUANTITY</p>
                     </v-col>
 
@@ -112,23 +101,17 @@
                         <div style="width:100%; height:1px; background-color:#DA1F1A"></div>
                     </v-col>
 
-                    <!-- section data -->
-                    <v-col cols="12" md="2" class="mt-2">
-                        <p style="font-size:14px; color:#DA1F1A; text-align:center;">{{form.event_name}}</p>
+                    
+                    <v-col cols="12" md="3" class="mt-2">
+                        <p style="font-size:14px; color:#DA1F1A; text-align:center;">{{form.merchandise_name}}</p>
                     </v-col>
-                    <v-col cols="12" md="2" class="mt-2">
-                        <p style="font-size:14px; color:#DA1F1A; text-align:center;">{{form.event_date}}</p>
+                    <v-col cols="12" md="3" class="mt-2">
+                        <p style="font-size:14px; color:#DA1F1A; text-align:center;">{{form.merchandisevar_size}}</p>
                     </v-col>
-                    <v-col cols="12" md="2" class="mt-2">
-                        <p style="font-size:14px; color:#DA1F1A; text-align:center;">{{form.event_time}}</p>
+                    <v-col cols="12" md="3" class="mt-2">
+                        <p style="font-size:14px; color:#DA1F1A; text-align:center;">{{form.merchandisevar_price}}</p>
                     </v-col>
-                    <v-col cols="12" md="2" class="mt-2">
-                        <p style="font-size:14px; color:#DA1F1A; text-align:center;">{{form.event_location}}</p>
-                    </v-col>
-                    <v-col cols="12" md="2" class="mt-2">
-                        <p style="font-size:14px; color:#DA1F1A; text-align:center;">{{form.event_price}}</p>
-                    </v-col>
-                    <v-col cols="12" md="2" class="mt-2">
+                    <v-col cols="12" md="3" class="mt-2">
                         <p style="font-size:14px; color:#DA1F1A; text-align:center;">{{form.quantity}}</p>
                     </v-col>
 
@@ -168,9 +151,9 @@
                             <p style="text-align:center; font-weight:700; font-size:32px; color:#DA1F1A">All Comments
                             </p>
                         </v-col>
-                        <v-col v-for="(item, index) in eventcomment" :key="index" class="mt-4" cols="12" sm="12"
+                        <v-col v-for="(item, index) in merchandisecomment" :key="index" class="mt-4" cols="12" sm="12"
                             style="display:flex; justify-content:center; align-items:center;">
-                            <v-card style="box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08); width:80%; padding-bottom:20px;">
+                            <v-card style="box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08); width:80%;">
                                 <v-container>
                                     <v-card-title>
                                         <v-row>
@@ -192,7 +175,7 @@
                                                         {{ item.created_at }}</p>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <p style="color:black; text-align:left;">{{ item.event_comment }}
+                                                    <p style="color:black; text-align:left;">{{ item.merchandise_comment }}
                                                     </p>
                                                 </v-col>
                                                 <v-col cols="12">
@@ -225,7 +208,7 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container fluid>
-                        <v-textarea v-model="form.event_comment_update" name="input-7-1" filled label="Comment" auto-grow>
+                        <v-textarea v-model="form.merchandise_comment_update" name="input-7-1" filled label="Comment" auto-grow>
                         </v-textarea>
                     </v-container>
                 </v-card-text>
@@ -266,7 +249,7 @@
                                  <p class="mt-4" style="text-align:center; font-weight:700; font-size:32px; color:#DA1F1A">Post Comments</p>
                             </v-col>
                             <v-col cols="12" class="mt-4">
-                                    <v-textarea v-model="form.event_comment" filled rounded name="input-7-1"  label="Comment" >
+                                    <v-textarea v-model="form.merchandise_comment" filled rounded name="input-7-1"  label="Comment" >
                                     </v-textarea>
                             </v-col>
                             <v-col cols="12" md="6" v-if="this.currentUser != null">
@@ -275,7 +258,7 @@
                             <v-col cols="12" md="6" v-if="this.currentUser != null">
                                 <div class="button-post" @click="setForm">Post Comment</div>
                             </v-col>
-                             <v-col cols="12" v-else>
+                            <v-col cols="12" v-else>
                                 <p style="color: #DA1F1A; font-size:15px;">Please login if you want to post a comment</p>
                             </v-col>
                         </v-row>
@@ -292,8 +275,11 @@
     export default {
         data() {
             return {
-                event: [],
+                merchandise: {},
+                itemsmerchandise: [],
+                merchandise_variant: [],
                 user: [],
+                selectSize: [],
                 dialogDetailTransaction: false,
                 dialog: false,
                 dialogConfirm: false,
@@ -303,27 +289,26 @@
                 form: {
                     user_id: '',
                     user_name: '',
-                    event_name: '',
-                    event_date: '',
-                    event_time: '',
-                    event_location: '',
+                    merchandise_name: '',
+                    merchandisevar_size: '',
+                    merchandisevar_price: '',
                     quantity: 1,
-                    event_price: '',
                     total_price: '',
                     date: '',
                     time: '',
                     dateTime: '',
-                    event_id: '',
+                    merchandisevar_id: '',
                     status: 'New Transaction',
-                    event_comment: '',
-                    event_comment_update: '',
+                    merchandise_comment: '',
+                    merchandise_comment_update: '',
+                    selectSize: '',
                 },
-                transactionevent: new FormData,
+                transactionmerchandise: new FormData,
                 comment: new FormData,
                 load: false,
                 error_message: '',
                 color: '',
-                eventcomment: [],
+                merchandisecomment: [],
                 currentUser: '',
             };
         },
@@ -337,11 +322,11 @@
                 }
             },
             saveComment() {
-                this.comment.append('event_comment', this.form.event_comment);
-                this.comment.append('event_id', this.$route.params.id);
+                this.comment.append('merchandise_comment', this.form.merchandise_comment);
+                this.comment.append('merchandise_id', this.$route.params.id);
                 this.comment.append('user_id', localStorage.getItem('user_id'));
 
-                var url = this.$api + '/event/' + this.$route.params.id + '/comment';
+                var url = this.$api + '/merchandise/' + this.$route.params.id + '/comment';
                 this.load = true;
 
                 this.$http.post(url, this.comment, {
@@ -365,11 +350,11 @@
                 });
             },
              update() {
-                this.comment.append('event_comment', this.form.event_comment_update);
-                this.comment.append('event_id', this.$route.params.id);
+                this.comment.append('merchandise_comment', this.form.merchandise_comment_update);
+                this.comment.append('merchandise_id', this.$route.params.id);
                 this.comment.append('user_id', localStorage.getItem('user_id'));
                 this.comment.append('_method', 'PUT');
-                var url = this.$api + '/event/' + this.$route.params.id + '/comment/' + this.editId;
+                var url = this.$api + '/merchandise/' + this.$route.params.id + '/comment/' + this.editId;
                 this.load = true;
                 this.$http.post(url, this.comment, {
                     headers: {
@@ -393,7 +378,7 @@
                 });
             },
             deleteData() {
-                var url = this.$api + '/event/' + this.$route.params.id + '/comment/' + this.deleteId;
+                var url = this.$api + '/merchandise/' + this.$route.params.id + '/comment/' + this.deleteId;
                 this.load = true;
                 this.$http.delete(url, {
                     headers: {
@@ -418,12 +403,12 @@
             },
             editItem(item) {
                 this.inputType = 'Ubah';
-                this.editId = item.eventcomment_id;
-                this.form.event_comment_update = item.event_comment;
+                this.editId = item.merchandisecmt_id;
+                this.form.merchandise_comment_update = item.merchandise_comment;
                 this.dialog = true;
             },
             deleteItem(item) {
-                this.deleteId = item.eventcomment_id;
+                this.deleteId = item.merchandisecmt_id;
                 this.dialogConfirm = true;
             },
             cancel() {
@@ -438,25 +423,33 @@
                 this.dialogConfirm = false;
             },
             resetForm() {
-               this.form.event_comment = '';
+               this.form.merchandise_comment = '';
             },
             cancelDelete() {
                 this.dialogConfirm = false;
             },
             getIdDetail() {
-                this.$http.get(this.$api + '/event/' + this.$route.params.id, {
+                this.$http.get(this.$api + '/merchandise/' + this.$route.params.id, {
                         headers: {
                             'Authorization': 'Bearer ' + localStorage.getItem('token')
                         }
                     })
                     .then(response => {
-                        this.event = response.data.data;
+                        this.merchandise = response.data.data;
+                        // this.itemsmerchandise = response.data.data.merchandise_variant;
+                        let data = JSON.parse(JSON.stringify(response.data.data.merchandise_variant));
+                        data.forEach((item)=>{
+                            let dashboard = item;
+                            dashboard.text = item.merchandisevar_size + ' -' + ' Price:' + item.merchandisevar_price + ' -' + ' Stock:' + item.merchandisevar_stock
+                            dashboard.value = item.merchandisevar_id
+                            this.itemsmerchandise.push(dashboard);
+                         });
+                         
+                         this.merchandise_variant = JSON.parse(JSON.stringify(response.data.data.merchandise_variant));
                     })
                     .catch(error => {
                         console.log(error)
                     })
-
-
             },
             getUser() {
                 this.$http.get(this.$api + '/user/' + localStorage.getItem('user_id'), )
@@ -478,12 +471,9 @@
                 this.form.dateTime = this.form.date + ' ' + this.form.time;
             },
             detailTransaction() {
-                this.form.total_price = this.form.quantity * this.event.event_price;
-                this.form.event_name = this.event.event_name;
-                this.form.event_date = this.event.event_date;
-                this.form.event_location = this.event.event_location;
-                this.form.event_time = this.event.event_time;
-                this.form.event_price = this.event.event_price;
+                this.dataMerchandiseVariant(this.selectSize);
+                this.form.merchandisevar_id = this.selectSize;
+                this.form.merchandise_name = this.merchandise.merchandise_name;
                 this.setDateTime();
                 this.dialogDetailTransaction = true;
             },
@@ -491,17 +481,17 @@
                 this.dialogDetailTransaction = false;
             },
             save() {
-                this.transactionevent.append('user_id', localStorage.getItem('user_id'));
-                this.transactionevent.append('event_id', this.$route.params.id);
-                this.transactionevent.append('transactionevent_datebuy', this.form.dateTime);
-                this.transactionevent.append('transactionevent_quantity', this.form.quantity);
-                this.transactionevent.append('transactionevent_totalprice', this.form.total_price);
-                this.transactionevent.append('transactionevent_status', this.form.status);
+                this.transactionmerchandise.append('user_id', localStorage.getItem('user_id'));
+                this.transactionmerchandise.append('merchandisevar_id', this.form.merchandisevar_id);
+                this.transactionmerchandise.append('merchandisetns_datebuy', this.form.dateTime);
+                this.transactionmerchandise.append('merchandisetns_quantity', this.form.quantity);
+                this.transactionmerchandise.append('merchandisetns_totalprice', this.form.total_price);
+                this.transactionmerchandise.append('merchandisetns_status', this.form.status);
 
-                var url = this.$api + '/transactionevent'
+                var url = this.$api + '/transactionmerchandise'
                 this.load = true;
 
-                this.$http.post(url, this.transactionevent, {
+                this.$http.post(url, this.transactionmerchandise, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     }
@@ -519,7 +509,7 @@
                 });
             },
             getEventComment() {
-                this.$http.get(this.$api + '/event/' + this.$route.params.id + '/comment', {
+                this.$http.get(this.$api + '/merchandise/' + this.$route.params.id + '/comment', {
                         headers: {
                             'Authorization': 'Bearer ' + localStorage.getItem('token')
                         }
@@ -527,12 +517,21 @@
                     })
                     .then(response => {
 
-                        this.eventcomment = response.data.data
+                        this.merchandisecomment = response.data.data
 
                     })
                     .catch(error => {
                         console.log(error)
                     })
+            },
+            dataMerchandiseVariant(id){
+                this.merchandise_variant.forEach((x)=>{
+                    if(x.merchandisevar_id == id){
+                        this.form.total_price = this.form.quantity * x.merchandisevar_price;
+                        this.form.merchandisevar_size = x.merchandisevar_size;
+                        this.form.merchandisevar_price = x.merchandisevar_price;
+                    }
+                })
             }
         },
         mounted() {
@@ -656,7 +655,7 @@
         border-radius: 100%;
     }
 
-    .chip-member {
+    .chip-merchandise {
         width: 200px;
         height: 40px !important;
         display: flex;

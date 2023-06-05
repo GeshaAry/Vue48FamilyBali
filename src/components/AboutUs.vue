@@ -81,21 +81,25 @@
                             <v-col cols="12" class="mt-4"
                                 style="display:flex; justify-content:center; align-items:center;">
                                 <div class="social-media-content" data-aos="fade-up" data-aos-delay="100">
-                                     <img data-aos="fade-up" data-aos-delay="100" src="../assets/twitterred.png" alt=""
-                                    style="object-fit:cover; width:50%; height:auto;">
+                                    <a href="https://twitter.com/48FamilyBali"> <img data-aos="fade-up" data-aos-delay="100" src="../assets/twitterred.png" alt=""
+                                    style="object-fit:cover; width:50%; height:auto;"> </a>
                                 </div>
                                 <div class="social-media-content" data-aos="fade-up" data-aos-delay="200">
                                     <img data-aos-delay="200" data-aos="fade-up" src="../assets/linered.png" alt=""
                                     style="object-fit:cover; width:50%; height:auto;">
                                 </div>
                                 <div class="social-media-content" data-aos="fade-up" data-aos-delay="300">
-                                    <img data-aos-delay="300" data-aos="fade-up" src="../assets/instagramred.png" alt=""
-                                    style="object-fit:cover; width:50%; height:auto;">
+                                   <a href="https://www.instagram.com/48familybali/"> <img data-aos-delay="300" data-aos="fade-up" src="../assets/instagramred.png" alt=""
+                                    style="object-fit:cover; width:50%; height:auto;"> </a>
                                 </div>
                                 <div class="social-media-content" data-aos="fade-up" data-aos-delay="400">
-                                    <img data-aos-delay="400" data-aos="fade-up" src="../assets/discordred.png" alt=""
-                                    style="object-fit:cover; width:50%; height:auto;">
+                                   <a href="https://discord.gg/SHcDJFnt"> <img data-aos-delay="400" data-aos="fade-up" src="../assets/discordred.png" alt=""
+                                    style="object-fit:cover; width:50%; height:auto;"> </a>
                                 </div>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <p style="color:#DA1F1A;">*If you want to join group line, you can chat admin on twitter @48FamilyBali</p>
                             </v-col>
                         </v-row>
                     </div>
@@ -188,6 +192,7 @@
         height: auto;
         background-color: white;
         box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);
+        padding-bottom: 30px;
     }
 
     .social-media-content {

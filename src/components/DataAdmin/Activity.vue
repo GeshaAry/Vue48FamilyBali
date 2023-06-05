@@ -5,7 +5,7 @@
                 <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Activity" single-line hide-details>
                 </v-text-field>
                 <v-spacer></v-spacer>
-                <v-btn style="background-color:#0165BC; color:white" @click="dialog = true"> Add Photos </v-btn>
+                <v-btn style="background-color:#0165BC; color:white" @click="dialog = true"> Add Activity </v-btn>
             </v-card-title>
             <v-data-table :headers="headers" :items="activitys" :search="search"
                 style="background-color:white; color:black;">

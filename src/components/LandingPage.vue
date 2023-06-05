@@ -138,18 +138,6 @@
             <v-container grid-list-xl>
                 <v-layout row wrap justify-center class="my-5">
                     <v-row>
-                        <v-col cols="12">
-                            <p style="font-weight:700; font-size:80px; color:#DA1F1A; text-align:center;">GALLERY</p>
-                        </v-col>
-                    </v-row>
-                </v-layout>
-            </v-container>
-        </section>
-
-        <section style="display:flex; justify-content:center; align-items:center;">
-            <v-container grid-list-xl>
-                <v-layout row wrap justify-center class="my-5">
-                    <v-row>
                         <v-col cols="12" md="3">
                             <p style="font-weight:700; font-size:80px; color:#DA1F1A; text-align:left;">EVENT</p>
                         </v-col>
@@ -219,6 +207,53 @@
                             <p style="font-weight:700; font-size:80px; color:#DA1F1A; text-align:right;">MERCHANDISE</p>
                         </v-col>
                     </v-row>
+                    <v-carousel hide-delimiters show-arrows-on-hover
+                        style="height: fit-content !important; display:flex; align-items:center; justify-content:center;">
+                        <template v-for="(item, index) in merchandise">
+                            <v-carousel-item v-if="(index + 1) % columns === 1 || columns === 1" :key="index">
+                                <v-row>
+                                    <template v-for="(n, i) in columns">
+                                        <template v-if="(+index + i) < merchandise.length">
+                                            <v-col :key="i">
+                                                <div class="merchandise-content">
+                                                    <div class="thumbnail-merchandise" v-if="merchandise[+index + i].merchandise_picture != null">
+                                                        <img :src="$baseUrl+'/storage/'+merchandise[+index + i].merchandise_picture"
+                                                            style="object-fit: cover; width:100%; height:300px;" alt="">
+                                                    </div>
+                                                    <div class="thumbnail-merchandise" v-else>
+                                                        <p>No Photo</p>
+                                                    </div>
+                                                    <v-row>
+                                                        <v-col cols="12" class="mt-4" md="6">
+                                                            <p
+                                                                style="font-weight:700; font-size:24px; color:black; text-align:left; padding-left:20px;">
+                                                                {{ merchandise[+index + i].merchandise_name}}
+                                                            </p>
+                                                        </v-col>
+                                                        <v-col cols="12" class="mt-4" md="6">
+                                                            <p
+                                                                style="font-size:16px; color:#797979; text-align:right; padding-right:20px;">
+                                                                {{ merchandise[+index + i].merchandise_category.merchandisectg_name}}
+                                                            </p>
+                                                        </v-col>
+                                                        <v-col cols="12" class="mt-4">
+                                                            <p style="font-size:20px; text-align:justify; color:#797979; float:left; padding-left:20px; padding-right:20px;"
+                                                                v-html="merchandise[+index + i].merchandise_description.substring(0, 200) +'...'">
+                                                            </p>
+                                                        </v-col>
+                                                        <div class="button-merchandise"
+                                                            style="cursor:pointer; margin-left:20px;" @click="detailMerchandise(merchandise[+index + i].merchandise_id)">
+                                                            Detail
+                                                        </div>
+                                                    </v-row>
+                                                </div>
+                                            </v-col>
+                                        </template>
+                                    </template>
+                                </v-row>
+                            </v-carousel-item>
+                        </template>
+                    </v-carousel>
                 </v-layout>
             </v-container>
         </section>
@@ -232,6 +267,7 @@
                 article: [],
                 member: [],
                 event: [],
+                merchandise: [],
             };
         },
         methods: {
@@ -253,6 +289,14 @@
                     name: 'DetailEventPage',
                     params: {
                         id: event_id,
+                    }
+                });
+            },
+            detailMerchandise(merchandise_id) {
+                this.$router.push({
+                    name: 'DetailMerchandisePage',
+                    params: {
+                        id: merchandise_id,
                     }
                 });
             },
@@ -278,6 +322,13 @@
             this.$http.get(this.$api + '/event')
                 .then(response => {
                     this.event = response.data.data.data;
+                }).catch(error => {
+                    console.log(error)
+                })
+            
+            this.$http.get(this.$api + '/merchandise')
+                .then(response => {
+                    this.merchandise = response.data.data.data;
                 }).catch(error => {
                     console.log(error)
                 })
@@ -452,6 +503,40 @@
         margin-bottom: 30px;
         margin-right: 20px;
 
+    }
+
+    .merchandise-content {
+        width: 560px;
+        height: 600px;
+        background-color: white;
+        margin: 20px;
+        box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);
+    }
+
+    .thumbnail-merchandise {
+        width: 100%;
+        height: 300px;
+        background-color: #DA1F1A;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    .button-merchandise {
+        width: 40%;
+        height: 50px;
+        background-color: #DA1F1A;
+        border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        color: white;
+        font-weight: 700;
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 30px;
     }
 
     @keyframes typing-animation {

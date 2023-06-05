@@ -143,8 +143,48 @@
                     </v-list-item-content>
                 </v-list-item>
 
+                <!-- Article User -->
+                <v-list-item v-for="item in itemsarticleuser" :key="item.title" link tag="router-link" :to="item.to">
+                    <v-list-item-icon>
+                        <v-icon style="color:white !important">{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title style="color:white !important">{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
                 <!-- Event -->
                 <v-list-item v-for="item in itemsevent" :key="item.title" link tag="router-link" :to="item.to">
+                    <v-list-item-icon>
+                        <v-icon style="color:white !important">{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title style="color:white !important">{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
+                 <!-- Transaction Event -->
+                <v-list-item v-for="item in itemstransactionevent" :key="item.title" link tag="router-link" :to="item.to">
+                    <v-list-item-icon>
+                        <v-icon style="color:white !important">{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title style="color:white !important">{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
+                 <!-- Transaction Merchandise -->
+                <v-list-item v-for="item in itemstransactionmerchandise" :key="item.title" link tag="router-link" :to="item.to">
+                    <v-list-item-icon>
+                        <v-icon style="color:white !important">{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title style="color:white !important">{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
+                <!-- Report -->
+                <v-list-item v-for="item in itemsreport" :key="item.title" link tag="router-link" :to="item.to">
                     <v-list-item-icon>
                         <v-icon style="color:white !important">{{ item.icon }}</v-icon>
                     </v-list-item-icon>
@@ -216,6 +256,13 @@
                         icon: 'mdi-newspaper-plus'
                     },
                 ],
+                itemsarticleuser:[
+                    {
+                        title: 'Article User',
+                        to: "/articleuser",
+                        icon: 'mdi-shield-check'
+                    },
+                ],
                 itemsmerchandise:[
                     {
                         title: 'Merchandise',
@@ -239,6 +286,25 @@
                         icon: 'mdi-calendar-plus'
                     },
                 ],
+
+                itemstransactionevent:[{
+                        title: 'Transaction Event',
+                        to: "/transactioneventadmin",
+                        icon: 'mdi-calendar-plus'
+                }],
+
+                itemstransactionmerchandise:[{
+                        title: 'Transaction Merchandise',
+                        to: "/transactionmerchandiseadmin",
+                        icon: 'mdi-tshirt-crew'
+                }],
+
+                itemsreport:[{
+                        title: 'Report',
+                        to: "/report",
+                        icon: 'mdi-file-chart-outline'
+                }],
+
                 mini: true,
             }
         },

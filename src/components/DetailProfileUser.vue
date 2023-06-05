@@ -16,7 +16,7 @@
                         </v-col>
                          <v-col cols="12" class="mt-4">
                             <div class="button-article" style="width:15%; border-radius:30px;  height:50px; background-color:#DA1F1A; display:flex; justify-content:center; align-items:center; color:white; 
-                                font-weight:700; font-size:12; float:right; margin-right:200px;">My Article</div>
+                                font-weight:700; font-size:12; float:right; margin-right:200px;" @click="myArticle(currentUser)">My Article</div>
                         </v-col>
                         <v-col cols="12" md="6" class="mt-8">
                             <div class="pictureuser" v-if="user.user_picture != null">
@@ -159,18 +159,21 @@
                             </v-card-title>
                             <v-data-table :headers="headers" :items="transactionevents" :search="search"
                                 style="background-color:white; color:black;">
-                                <template v-slot:[`item.activity_thumbnail`]="{item}">
-                                    <v-img :src="$baseUrl+'/storage/'+item.activity_thumbnail" height="50px" width="50px" 
+                                <template v-slot:[`item.transactionevent_proofpayment`]="{item}">
+                                    <v-img :src="$baseUrl+'/storage/'+item.transactionevent_proofpayment" height="50px" width="50px" 
                                         style="object-fit:cover; border-radius:50%; cursor:pointer" @click="showPhotos(item)" />
                                 </template>
 
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <div style="display:flex; align-items:center;">
-                                    <div v-if="item.transactionevent_status == 'New Transaction'" style="background-color:green; width:80px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
-                                        <span style="cursor: pointer;" @click="editHandler(item)">Edit</span>
+                                    <div v-if="item.transactionevent_status == 'New Transaction' || item.transactionevent_status == 'Transaction Failed' " style="background-color:green; width:80px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                        <span style="cursor: pointer;" @click="editHandlerProof(item)">Edit</span>
                                     </div>
-                                    <div v-if="item.transactionevent_status == 'New Transaction'" style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                    <div v-if="item.transactionevent_status == 'New Transaction' || item.transactionevent_status == 'Transaction Failed' " style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
                                         <span style="cursor: pointer;"  @click="deleteHandler(item)">Delete</span>
+                                    </div>
+                                    <div v-if="item.transactionevent_status == 'Transaction Success'" style="background-color:blue; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                        <span style="cursor: pointer;"  @click="downloadEvent(item.transactionevent_id)">download</span>
                                     </div>
                                     </div>
                                 </template>
@@ -189,6 +192,34 @@
                             <p style="font-weight:700; color:#DA1F1A; font-size:32px; text-align:left;">Riwayat
                                 Pembelian Merchandise</p>
                         </v-col>
+                        <v-card style="overflow:hidden; box-shadow:0px 2px 6px rgba(0,0,0,0.05); background-color:white; width:100%;">
+                            <v-card-title>
+                                <v-text-field v-model="searchmerchandise" append-icon="mdi-magnify" label="Search Transaction Merchandise" single-line hide-details>
+                                </v-text-field>
+                                <v-spacer></v-spacer>
+                            </v-card-title>
+                            <v-data-table :headers="headersmerchandise" :items="transactionmerchandises" :search="search"
+                                style="background-color:white; color:black;">
+                                <template v-slot:[`item.merchandisetns_proofpayment`]="{item}">
+                                    <v-img :src="$baseUrl+'/storage/'+item.merchandisetns_proofpayment" height="50px" width="50px" 
+                                        style="object-fit:cover; border-radius:50%; cursor:pointer" @click="showPhotos(item)" />
+                                </template>
+
+                                <template v-slot:[`item.actions`]="{ item }">
+                                    <div style="display:flex; align-items:center;">
+                                    <div v-if="item.merchandisetns_status == 'New Transaction' || item.merchandisetns_status == 'Transaction Failed'" style="background-color:green; width:80px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                        <span style="cursor: pointer;" @click="editHandlerProofMerchandise(item)">Edit</span>
+                                    </div>
+                                    <div v-if="item.merchandisetns_status == 'New Transaction' || item.merchandisetns_status == 'Transaction Failed'" style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                        <span style="cursor: pointer;"  @click="deleteHandlerMerchandise(item)">Delete</span>
+                                    </div>
+                                    <div v-if="item.merchandisetns_status == 'Transaction Success'" style="background-color:blue; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                        <span style="cursor: pointer;"  @click="downloadMerchandise(item.merchandisetns_id)">download</span>
+                                    </div>
+                                    </div>
+                                </template>
+                            </v-data-table>
+                        </v-card>
                     </v-row>
                 </v-layout>
             </v-container>
@@ -263,7 +294,7 @@
         <v-dialog v-model="dialogChangePassword" persistent max-width="500px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Edit Profile</span>
+                    <span class="headline">Change Password</span>
                 </v-card-title>
                 <center>
                      <v-text-field filled rounded v-model="password"
@@ -295,6 +326,66 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="dialogConfirmMerchandise" persistent max-width="400px">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Warning !</span>
+                </v-card-title>
+                <v-card-text>Are you sure to delete this data?</v-card-text>
+                <v-card-action>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="cancelDeleteMerchandise">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text @click="deleteDataMerchandise">Delete</v-btn>
+                </v-card-action>
+            </v-card>
+        </v-dialog>
+
+          <v-dialog max-width="300" v-model="dialogPhotos">
+            <v-card>
+                <v-container>
+                    <v-img width="100%"
+                        :src="previewImageUrl == '' ? $baseUrl+'/storage/'+form.transactionevent_proofpayment : previewImageUrl"
+                        id="previewImage" class="mb-5"></v-img>
+                </v-container>
+            </v-card>
+        </v-dialog>
+
+         <v-dialog max-width="500" v-model="dialogUploadProofPayment">
+           <v-card>
+                <v-card-title>
+                    <span class="headline">Upload Proof Payment</span>
+                </v-card-title>
+                <center>
+                      <v-file-input rounded filled prepend-icon="mdi-camera" label="Upload Photos" id="filePhotos"
+                            ref="filePhotosProofPayment" style="width:400px;"></v-file-input>
+                                <span>Upload maximum size file picture: 1 MB</span>
+                </center>
+                <v-card-action>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="cancelProofPayment">Cancel</v-btn>
+                    <v-btn color="#0165BC" text @click="updateProofPayment">Update</v-btn>
+                </v-card-action>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog max-width="500" v-model="dialogUploadProofPaymentMerchandise">
+           <v-card>
+                <v-card-title>
+                    <span class="headline">Upload Proof Payment</span>
+                </v-card-title>
+                <center>
+                      <v-file-input rounded filled prepend-icon="mdi-camera" label="Upload Photos" id="filePhotos"
+                            ref="filePhotosProofPaymentMerchandise" style="width:400px;"></v-file-input>
+                                <span>Upload maximum size file picture: 1 MB</span>
+                </center>
+                <v-card-action>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="cancelProofPaymentMerchandise">Cancel</v-btn>
+                    <v-btn color="#0165BC" text @click="updateProofPaymentMerchandise">Update</v-btn>
+                </v-card-action>
+            </v-card>
+        </v-dialog>
+
     </v-main>
 </template>
 
@@ -304,11 +395,16 @@
             return {
                 user: [],
                 transactionevents: [],
+                transactionmerchandises: [],
                 dialogPicture: false,
                 dialogMember: false,
                 dialogProfile: false,
                 dialogChangePassword: false,
                 dialogConfirm: false,
+                dialogConfirmMerchandise: false,
+                dialogPhotos: false,
+                dialogUploadProofPayment: false,
+                dialogUploadProofPaymentMerchandise: false,
                 previewImageUrl: '',
                 snackbar: false,
                 load: false,
@@ -317,12 +413,15 @@
                 itemsmember: [],
                 selectMember: '',
                 search: null,
+                searchmerchandise: null,
                 form: {
                     selectMember: '',
                     user_name: '',
                     user_birthdate: '',
                     user_gender:'',
                     user_telephone:'',
+                    transactionevent_proofpayment:'',
+                    merchandisetns_proofpayment:'',
                 },
                 jenisKelamin: [
                     {
@@ -334,12 +433,7 @@
                         value: "Perempuan"
                     }
                 ],
-                headers: [{
-                        text: "Transaction Event Id",
-                        align: "start",
-                        sortable: true,
-                        value: "transactionevent_id"
-                    },
+                headers: [
                     {
                         text: "Name",
                         value: "user.user_name"
@@ -377,6 +471,53 @@
                         value: "actions"
                     }
                 ],
+
+                headersmerchandise: [
+                    {
+                        text: "Name",
+                        value: "user.user_name"
+                    },
+                    {
+                        text: "Admin",
+                        value: "admin.admin_username"
+                    },
+                    {
+                        text: "Date Buy",
+                        value: "merchandisetns_datebuy"
+                    },
+                    {
+                        text: "Merchandise Name",
+                        value: "merchandise_variant.merchandise.merchandise_name"
+                    },
+                    {
+                        text: "Size",
+                        value: "merchandise_variant.merchandisevar_size"
+                    },
+                    {
+                        text: "Price",
+                        value: "merchandise_variant.merchandisevar_price"
+                    },
+                    {
+                        text: "Quantity",
+                        value: "merchandisetns_quantity"
+                    },
+                    {
+                        text: "Total Price",
+                        value: "merchandisetns_totalprice"
+                    },
+                    {
+                        text: "Proof Payment",
+                        value: "merchandisetns_proofpayment"
+                    },
+                    {
+                        text: "Status",
+                        value: "merchandisetns_status"
+                    },
+                    {
+                        text: "Actions",
+                        value: "actions"
+                    }
+                ],
             };
         },
         methods: {
@@ -396,8 +537,8 @@
             updateProfilePictureUser() {
                 var data = new FormData(),
 
-                    inputPhotos = document.getElementById('filePhotos'),
-                    dataFilePhotos = inputPhotos.files[0];
+                inputPhotos = document.getElementById('filePhotos'),
+                dataFilePhotos = inputPhotos.files[0];
                 if (dataFilePhotos) {
                     data.append('user_picture', dataFilePhotos);
                 }
@@ -453,6 +594,80 @@
                 this.editId = localStorage.getItem('user_id');
                 this.selectMember = item.member.member_id;
                 this.dialogMember = true;
+            },
+
+            updateProofPayment() {
+                var data = new FormData(),
+
+                inputPhotosProof = document.getElementById('filePhotos'),
+                dataFilePhotosProof = inputPhotosProof.files[0];
+                if (dataFilePhotosProof) {
+                    data.append('transactionevent_proofpayment',dataFilePhotosProof);
+                }
+
+                var url = this.$api + '/uploadproofpayment/' + this.editId;
+                this.load = true;
+
+
+                this.$http.post(url, data, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                }).then(response => {
+                    this.error_message = response.data.message;
+                    this.color = "green";
+                    this.snackbar = true;
+                    this.load = false;
+                    this.dialogUploadProofPayment = false;
+                    location.reload();
+                }).catch(error => {
+                    this.error_message = error.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                    this.load = false;
+                });
+            },
+            editHandlerProof(item) {
+                this.editId = item.transactionevent_id;
+                this.form.transactionevent_proofpayment = item.transactionevent_proofpayment;
+                this.dialogUploadProofPayment = true;
+            },
+
+            updateProofPaymentMerchandise() {
+                var data = new FormData(),
+
+                inputPhotosProofMerchandise = document.getElementById('filePhotos'),
+                dataFilePhotosProofMerchandise = inputPhotosProofMerchandise.files[0];
+                if (dataFilePhotosProofMerchandise) {
+                    data.append('merchandisetns_proofpayment',dataFilePhotosProofMerchandise);
+                }
+
+                var url = this.$api + '/uploadproofpaymentmerchandise/' + this.editId;
+                this.load = true;
+
+
+                this.$http.post(url, data, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                }).then(response => {
+                    this.error_message = response.data.message;
+                    this.color = "green";
+                    this.snackbar = true;
+                    this.load = false;
+                    this.dialogUploadProofPaymentMerchandise = false;
+                    location.reload();
+                }).catch(error => {
+                    this.error_message = error.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                    this.load = false;
+                });
+            },
+            editHandlerProofMerchandise(item) {
+                this.editId = item.merchandisetns_id ;
+                this.form.merchandisetns_proofpayment = item.merchandisetns_proofpayment;
+                this.dialogUploadProofPaymentMerchandise = true;
             },
 
             updateProfile() {
@@ -519,6 +734,16 @@
                 this.dialogPicture = false;
                 this.$refs.filePhotosUser.value = null;
             },
+            
+            cancelProofPayment() {
+                this.dialogUploadProofPayment = false;
+                this.$refs.filePhotosProofPayment.value = null;
+            },
+
+            cancelProofPaymentMerchandise() {
+                this.dialogUploadProofPaymentMerchandise = false;
+                this.$refs.filePhotosProofPaymentMerchandise.value = null;
+            },
 
             cancelDialogMember() {
                 this.dialogMember = false;
@@ -545,7 +770,14 @@
                 this.$http.get(this.$api + '/transactionevent/user/' + this.$route.params.id, )
                 .then(response => {
                     this.transactionevents = response.data.data;
-                    console.log(this.user);
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            getTransactionMerchandise(){
+                this.$http.get(this.$api + '/transactionmerchandise/user/' + this.$route.params.id, )
+                .then(response => {
+                    this.transactionmerchandises = response.data.data;
                 }).catch(error => {
                     console.log(error)
                 })
@@ -578,6 +810,82 @@
             cancelDelete() {
                 this.dialogConfirm = false;
             },
+
+            deleteDataMerchandise() {
+                var url = this.$api + '/transactionmerchandise/' + this.deleteId;
+                this.load = true;
+                this.$http.delete(url, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                }).then(response => {
+                    this.error_message = response.data.message;
+                    this.color = "green";
+                    this.snackbar = true;
+                    this.load = false;
+                    this.dialogConfirmMerchandise = false
+                    location.reload();
+                }).catch(error => {
+                    this.error_message = error.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                    this.load = false;
+                });
+            },
+            deleteHandlerMerchandise(item) {
+                this.deleteId = item.merchandisetns_id;
+                this.dialogConfirmMerchandise = true;
+            },
+            cancelDeleteMerchandise() {
+                this.dialogConfirmMerchandise = false;
+            },
+            showPhotos(item){
+                this.form.transactionevent_proofpayment = item.transactionevent_proofpayment;
+                this.dialogPhotos = true;
+            },
+            downloadEvent(transactionevent_id){
+                var url = this.$api + "/downloadinvoice/" + transactionevent_id;
+                this.$http.get(url, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    let blob = new Blob([response.data], { type: 'application/pdf' });
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'Invoice E-Ticket.pdf';
+                    link.click();
+                })
+                .catch((error) => {
+                    this.snackbar.error_message = error.response.data.message;
+                    this.snackbar.color = "red";
+                });
+            },
+
+             downloadMerchandise(merchandisetns_id){
+                var url = this.$api + "/downloadinvoicemerchandise/" + merchandisetns_id;
+                this.$http.get(url, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    let blob = new Blob([response.data], { type: 'application/pdf' });
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'Invoice Merchandise.pdf';
+                    link.click();
+                })
+                .catch((error) => {
+                    this.snackbar.error_message = error.response.data.message;
+                    this.snackbar.color = "red";
+                });
+            },
+
+            myArticle(currentUser) {
+                this.$router.push({
+                    name: 'ArticleUserDashboard',
+                    params: {
+                        id: currentUser,
+                    }
+                    
+                });
+            },
         },
         mounted() {
             this.$http.get(this.$api + '/user/' + this.$route.params.id, )
@@ -590,6 +898,8 @@
             
             this.getAllMember();
             this.getTransactionEvent();
+            this.getTransactionMerchandise();
+            this.currentUser = localStorage.getItem('user_id');
         }
 
     }

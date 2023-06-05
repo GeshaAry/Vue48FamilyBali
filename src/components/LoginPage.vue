@@ -21,6 +21,7 @@
                                         <v-text-field v-model="password" type="password" outlined style="height:20px !important; width:100%; margin-top:40px; border-color: #cecece;" placeholder="Enter Your Password"></v-text-field>
                                         <div  style="width:100%; height:50px; border-radius:10px; background-color:#DA1F1A; cursor:pointer; color:white; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:80px;" @click="submit"> Sign In </div>
                                         <p style="color:black; margin:0px auto; font-size:15px; margin-top:20px;">Not registered yet? <a @click="registerForm" style="text-decoration:none; font-weight:700; color:#DA1F1A;">Create an Account</a></p>
+                                        <p style="color:black; margin:0px auto; font-size:15px;">Forgot Password? <a @click="forgotPassword" style="text-decoration:none; font-weight:700; color:#DA1F1A;">Click here</a></p>
                                         <p> <a  @click="landingPage" style="text-decoration:none; font-weight:700; color:#DA1F1A;"> Back to Home </a></p>
                                     </div>
                                 </div>
@@ -81,6 +82,11 @@
             registerForm() {
                 this.$router.push({
                     name: 'Register',
+                });
+            },
+            forgotPassword() {
+                this.$router.push({
+                    name: 'EmailForgotPassword',
                 });
             },
 

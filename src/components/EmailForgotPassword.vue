@@ -18,6 +18,7 @@
                                         <p style="float:left; color:black; font-weight:700; font-size:15px;">Email</p>
                                         <v-text-field outlined v-model="email" style="height:20px !important; width:100%; margin-top:40px; border-color: #cecece;" placeholder="Enter Your Email"></v-text-field>
                                         <div  style="width:100%; height:50px; border-radius:10px; background-color:#DA1F1A; cursor:pointer; color:white; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:80px;" @click="submit"> Send Email </div>
+                                        <p @click="loginForm" style="cursor:pointer; font-weight:700; color:#DA1F1A; font-size:16px; padding-top:10px; text-align:center;">Back to Login Page</p>
                                     </div>
                                 </div>
                                  <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom> {{ error_message }}
@@ -67,9 +68,9 @@
                 });
             },
 
-            landingPage() {
+            loginForm() {
                 this.$router.push({
-                    name: 'LandingPage',
+                    name: 'LoginPage',
                 });
             },
         },

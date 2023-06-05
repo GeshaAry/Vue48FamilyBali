@@ -11,7 +11,7 @@
                                 </div>
                             </v-col>
                             <v-col cols="12" md="6">
-                                <v-col cols="12" class="mt-8">
+                                <v-col cols="12" md="10" class="mt-8">
                                     <p style="font-weight:700; color:black; font-size:40px; text-align:left; padding-left:20px;">Register</p>
                                 </v-col>
                                 <v-col cols="12" class="mt-8">
@@ -41,6 +41,7 @@
                                 <v-col cols="12" class="mt-16" style="display:flex; justify-content:center;">
                                    <div style="width:95%; height:40px; border-radius:10px; background-color:#DA1F1A; cursor:pointer; color:white; font-weight:700; display:flex; align-items:center; justify-content:center;" @click="submitregister"> Sign Up </div>
                                 </v-col>
+                                <p @click="loginForm" style="cursor:pointer; font-weight:700; color:#DA1F1A; font-size:16px; padding-top:10px; text-align:center;">Back to Login Page</p>
                             </v-col>
                         </v-row>
                     </div>
