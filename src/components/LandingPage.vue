@@ -2,7 +2,7 @@
     <v-main>
         <section>
             <div class="thumbnail">
-                <img src="../assets/Rectangle.png" style="object-fit:cover; width:100%; height:auto; margin-top:-65px;"
+                <img src="../assets/Rectangle.png" style="object-fit:cover; width:100%; height:auto; margin-top:-65px;" class="image-rectangle"
                     alt="">
                 <div class="wrap-content-thumbnail">
                     <v-row>
@@ -20,7 +20,7 @@
                                         Komunitas yang berbasis pada salah satu provinsi di indonesia yaitu Bali,
                                         terbentuk pada tahun 2012. Tercipta untuk mewadahi orang-orang yang memiliki
                                         minat yang sama yaitu mendukung Idol Ibukota JKT48.</p>
-                                    <div class="button-thumbnail" data-aos="fade-right" data-aos-delay="400">
+                                    <div class="button-thumbnail" data-aos="fade-right" data-aos-delay="400" @click="AboutUs">
                                         See More
                                     </div>
                                 </v-col>
@@ -28,7 +28,7 @@
                         </v-col>
                         <v-col cols="12" md="4">
                             <img src="../assets/Logo48.png" alt="" style="object-fit:cover; width:100%;"
-                                data-aos="zoom-in" data-aos-delay="300">
+                                data-aos="zoom-in" data-aos-delay="300" class="image-landingpage">
                         </v-col>
                     </v-row>
                 </div>
@@ -39,7 +39,7 @@
                 <v-layout row wrap justify-center class="my-5">
                     <v-row>
                         <v-col cols="12">
-                            <p style="font-weight:700; font-size:32px; color:#DA1F1A; text-align:left;">Ada yang
+                            <p class="text-birthday" style="font-weight:700; font-size:32px; color:#DA1F1A; text-align:left;">Ada yang
                                 Berulang Tahun Bulan Ini</p>
                         </v-col>
                         <v-col cols="12" style="display:flex; justify-content:center; align-items:center;">
@@ -82,12 +82,12 @@
                 <v-layout row wrap justify-center class="my-5">
                     <v-row>
                         <v-col cols="12" md="6" style="display:flex; align-items:center;">
-                            <p style="font-weight:700; font-size:24px; color:#DA1F1A; text-align:left; cursor:pointer;"
+                            <p class="text-sub-article-landing" style="font-weight:700; font-size:24px; color:#DA1F1A; text-align:left; cursor:pointer;"
                                 @click="ArticlePage">View All Article
                                 Post</p>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <p style="font-weight:700; font-size:80px; color:#DA1F1A; text-align:right;">ARTICLE</p>
+                            <p class="text-title-article-landing" style="font-weight:700; font-size:80px; color:#DA1F1A; text-align:right;">ARTICLE</p>
                         </v-col>
                     </v-row>
                     <v-carousel hide-delimiters show-arrows-on-hover
@@ -276,6 +276,11 @@
                     name: 'ArticlePage',
                 });
             },
+            AboutUs() {
+                this.$router.push({
+                    name: 'AboutUs',
+                });
+            },
             detailArticle(article_id) {
                 this.$router.push({
                     name: 'DetailArticlePage',
@@ -394,6 +399,7 @@
         align-items: center;
         color: #DA1F1A;
         font-weight: 700;
+        cursor: pointer;
     }
 
     .card-birthday-member {
@@ -573,6 +579,31 @@
 
         .rowProduk {
             margin: -12px !important;
+        }
+
+        .image-landingpage{
+            display: none !important;
+        }
+        .image-rectangle{
+            display: none !important;
+        }
+
+        .wrap-content-thumbnail{
+            background-color: #DA1F1A;
+            position: relative !important;
+            margin-top: 400px;
+        }
+        
+        .text-birthday{
+            margin-top: -100px !important;
+        }
+
+        .text-sub-article-landing{
+            font-size: 24px !important;
+        }   
+
+        .text-title-article-landing{
+            float: left !important;
         }
     }
 </style>

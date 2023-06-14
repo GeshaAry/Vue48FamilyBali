@@ -214,7 +214,7 @@
         margin-top: 0 !important;
     }
 
-    @media screen and (max-width:768px) {
+    @media screen and (max-width:1060px) {
         .slideCol {
             padding: 0;
         }
@@ -229,13 +229,17 @@
         }
 
         .text-moment-left{
-            padding-left: 20px !important;
-            font-size: 25px !important;
+            text-align: center !important;
         }
 
         .text-moment-right{
-            padding-right: 0px !important;
-             font-size: 12px !important;
+            font-size: 20px !important;
+            padding-right: 20px !important;
+        }
+
+        .social-media-content {
+            width: 100px;
+            height: 100px;
         }
 
     }

@@ -12,13 +12,13 @@
                     <div class="article-card" v-for="(item, index) in article.data" :key="index">
                         <v-row>
                             <v-col cols="12" md="5">
-                                <div class="wrap-thumbnail-article" >
+                                <div class="wrap-thumbnail-article">
                                     <img :src="$baseUrl+'/storage/'+item.article_thumbnail" alt=""
-                                        style="object-fit:cover; width:100%; height:600px; border-radius:30px 0px 0px 30px;">
+                                        style="object-fit:cover; width:100%; height:600px; border-radius:30px 0px 0px 30px;" class="image-article">
                                 </div>
                             </v-col>
                             <v-col cols="12" md="7" class="mt-4">
-                                <p style="font-weight:700; text-align:left; font-size:36px; color:#DA1F1A; padding-left:20px;">
+                                <p class="title-article" style="font-weight:700; text-align:left; font-size:36px; color:#DA1F1A; padding-left:20px;">
                                     {{ item.article_title }}</p>
                                 <div class="chip-article">
                                     {{ item.admin.admin_username }}
@@ -99,7 +99,7 @@
 
     .article-card {
         width: 100%;
-        height: 600px;
+        height: auto;
         border-radius: 30px;
         background-color: white;
         box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);
@@ -147,13 +147,20 @@
         margin-top: 0 !important;
     }
 
-    @media screen and (max-width:768px) {
+    @media screen and (max-width:1060px) {
         .slideCol {
             padding: 0;
         }
+        
+        .article-card{
+            width: 100%;
+        }
+        .image-article{
+            border-radius: 30px 30px 0px 0px  !important;
+        }
 
-        .rowProduk {
-            margin: -12px !important;
+        .button-detail-article{
+            position: relative !important;
         }
     }
 </style>

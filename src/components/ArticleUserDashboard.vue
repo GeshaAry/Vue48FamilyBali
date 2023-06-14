@@ -10,64 +10,6 @@
             <v-container grid-list-xl>
                 <v-layout row wrap justify-center class="my-5">
                     <v-row>
-                        <v-col cols="12" style="display:flex; justify-content:center; align-items:center;">
-                            <div class="form-add">
-                                <v-row>
-                                    <v-col cols="12" class="mt-4">
-                                        <p style="font-weight:700; font-size:32px; text-align:center; color:#DA1F1A">Add
-                                            Your
-                                            Article</p>
-                                    </v-col>
-                                    <v-col cols="12" class="mt-4"
-                                        style="display:flex; justify-content:center; align-items:center; flex-flow:column;">
-                                        <v-file-input rounded filled prepend-icon="mdi-camera" label="Upload Thumbnail"
-                                            id="filePhotos" ref="filePhotosArticleUser" style="width:750px">
-                                        </v-file-input>
-                                        <p>Upload maximum size file picture: 1 MB</p>
-                                        <v-text-field filled rounded v-model="form.articleuser_title"
-                                            label="Article Title" required style="width:750px">
-                                        </v-text-field>
-                                        <editor api-key="tx8fjxrs5lqmjq2w9obzcjrdkewcyztzff962uqvi4woty7v" :init="{
-                                                height: 500,
-                                                menubar: false,
-                                                forced_root_block : 'p',
-                                                selector: 'textarea',
-                                                encoding: 'xml',
-                                                plugins: [
-                                                'advlist autolink lists link image charmap print preview anchor',
-                                                'searchreplace visualblocks code fullscreen',
-                                                'insertdatetime media table paste code help wordcount'
-                                                ],
-                                                toolbar:
-                                                'undo redo | formatselect | bold italic backcolor | \
-                                                alignleft aligncenter alignright alignjustify | \
-                                                bullist numlist outdent indent | removeformat | help'
-                                    }" v-model="form.articleuser_description" />
-                                    <!-- <v-textarea filled name="input-7-4" label="Article Description" style="width:750px" v-model="form.articleuser_description">
-                                    </v-textarea> -->
-                                    </v-col>
-                                    <v-col cols="12" md="6" class="mt-4">
-                                        <div class="button-reset" @click="resetForm()">
-                                            Reset
-                                        </div>
-                                    </v-col>
-                                    <v-col cols="12" md="6" class="mt-4">
-                                        <div class="button-post" @click="addArticle()">
-                                            Post Article
-                                        </div>
-                                    </v-col>
-                                </v-row>
-                            </div>
-                        </v-col>
-                    </v-row>
-                </v-layout>
-            </v-container>
-        </section>
-
-        <section style="display:flex; justify-content:center; align-items:center;">
-            <v-container grid-list-xl>
-                <v-layout row wrap justify-center class="my-5">
-                    <v-row>
                         <v-col cols="12">
                             <p style="font-weight:700; color:#DA1F1A; font-size:32px; text-align:left;">My Articles</p>
                         </v-col>
@@ -78,6 +20,8 @@
                                     single-line hide-details>
                                 </v-text-field>
                                 <v-spacer></v-spacer>
+                                <div style="background-color:#DA1F1A; color:white; width:200px; height:50px; display:flex; 
+                                justify-content:center; align-items:center; font-weight:700; border-radius:10px; cursor:pointer;" @click="postArticleUser(currentUser)"> Post Article </div>
                             </v-card-title>
                             <v-data-table :headers="headers" :items="articleuser" :search="search"
                                 style="background-color:white; color:black;">
@@ -136,13 +80,15 @@
                         id="previewImage" class="mb-5"></v-img>
                 </center>
                 <center>
-                    <v-file-input rounded filled prepend-icon="mdi-camera" label="Upload Thumbnail" id="filePhotos"
+                    <v-file-input rounded filled prepend-icon="mdi-camera" label="Upload Thumbnail" id="filePhotosArticle"
                         ref="filePhotosArticleUser">
                     </v-file-input>
                     <p>Upload maximum size file picture: 1 MB</p>
                     <v-text-field filled rounded v-model="form.articleuser_title" label="Article Title" required>
                     </v-text-field>
-                    <editor api-key="tx8fjxrs5lqmjq2w9obzcjrdkewcyztzff962uqvi4woty7v" :init="{
+                    <editor
+                        api-key="tx8fjxrs5lqmjq2w9obzcjrdkewcyztzff962uqvi4woty7v"
+                        :init="{
                             height: 500,
                             menubar: false,
                             forced_root_block : 'p',
@@ -157,9 +103,9 @@
                             'undo redo | formatselect | bold italic backcolor | \
                             alignleft aligncenter alignright alignjustify | \
                             bullist numlist outdent indent | removeformat | help'
-                        }" v-model="form.articleuser_description" />
-                    <!-- <v-textarea filled name="input-7-4" label="Article Description" v-model="form.articleuser_description">
-                    </v-textarea> -->
+                        }"
+                            v-model="form.articleuser_description"
+                    />
                 </center>
                 <v-card-action>
                     <v-spacer></v-spacer>
@@ -185,13 +131,12 @@
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom> {{ error_message }}</v-snackbar>
     </v-main>
 </template>
-
 <script>
     import Editor from '@tinymce/tinymce-vue';
     export default {
         name: "ArticleUserDashboard",
         components: {
-            'editor': Editor
+            'editor': Editor,
         },
         data() {
             return {
@@ -249,39 +194,9 @@
                 this.form.articleuser_thumbnail = item.articleuser_thumbnail;
                 this.dialogPhotos = true;
             },
-            addArticle() {
-                this.articleusers.append('user_id', localStorage.getItem('user_id'));
-                var inputPhotos = document.getElementById('filePhotos'),
-                    dataFilePhotos = inputPhotos.files[0];
-                this.articleusers.append('articleuser_thumbnail', dataFilePhotos ?? '');
-                this.articleusers.append('articleuser_title', this.form.articleuser_title);
-                this.articleusers.append('articleuser_description', this.form.articleuser_description);
-                this.articleusers.append('articleuser_status', 'On Progress');
-
-                var url = this.$api + '/articleuser'
-                this.load = true;
-
-                this.$http.post(url, this.articleusers, {
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                    }
-                }).then(response => {
-                    this.error_message = response.data.message;
-                    this.color = "green";
-                    this.snackbar = true;
-                    this.load = true;
-                    this.resetForm();
-                    location.reload();
-                }).catch(error => {
-                    this.error_message = error.response.data.message;
-                    this.color = "red";
-                    this.snackbar = true;
-                    this.load = false;
-                });
-            },
             update() {
-                var data = new FormData(),
-                inputPhotos = document.getElementById('filePhotos'),
+                var data = new FormData();
+                var inputPhotos = document.getElementById('filePhotosArticle'),
                 dataFilePhotos = inputPhotos.files[0];
                 if (dataFilePhotos) {
                     data.append('articleuser_thumbnail', dataFilePhotos);
@@ -375,6 +290,15 @@
 
                 });
             },
+            postArticleUser(currentUser) {
+                this.$router.push({
+                    name: 'ArticleUserPost',
+                    params: {
+                        id: currentUser,
+                    }
+                    
+                });
+            },
         },
         mounted() {
             this.$http.get(this.$api + '/articleuser/' + this.$route.params.id, )
@@ -382,7 +306,9 @@
                     this.articleuser = response.data.data;
                 }).catch(error => {
                     console.log(error)
-                })
+            })
+
+            this.currentUser = localStorage.getItem('user_id');
         }
 
     }

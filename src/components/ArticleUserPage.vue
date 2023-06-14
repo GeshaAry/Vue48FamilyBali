@@ -14,7 +14,7 @@
                             <v-col cols="12" md="5">
                                 <div class="wrap-thumbnail-article">
                                     <img :src="$baseUrl+'/storage/'+item.articleuser_thumbnail" alt=""
-                                        style="object-fit:cover; width:100%; height:600px; border-radius:30px 0px 0px 30px;">
+                                        style="object-fit:cover; width:100%; height:600px; border-radius:30px 0px 0px 30px;" class="image-article">
                                 </div>
                             </v-col>
                             <v-col cols="12" md="7" class="mt-4">
@@ -99,7 +99,7 @@
 
     .article-card {
         width: 100%;
-        height: 600px;
+        height: auto;
         border-radius: 30px;
         background-color: white;
         box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);
@@ -147,13 +147,20 @@
         margin-top: 0 !important;
     }
 
-    @media screen and (max-width:768px) {
+   @media screen and (max-width:1060px) {
         .slideCol {
             padding: 0;
         }
+        
+        .article-card{
+            width: 100%;
+        }
+        .image-article{
+            border-radius: 30px 30px 0px 0px  !important;
+        }
 
-        .rowProduk {
-            margin: -12px !important;
+        .button-detail-article{
+            position: relative !important;
         }
     }
 </style>

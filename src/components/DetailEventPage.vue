@@ -39,7 +39,7 @@
                                 <p class="mt-2 sub-text-detail-event"
                                     style="color: #DA1F1A; text-align:justify; font-size:15px; padding-right:20px;">
                                     Quantity</p>
-                                <v-text-field type="number" v-model="form.quantity" class="mt-2" style="width:400px"
+                                <v-text-field type="number" v-model="form.quantity" class="mt-2 text-field-event" style="width:400px"
                                     required> </v-text-field>
                                 <div v-if="this.currentUser != null " class="button-buy" @click="detailTransaction()">
                                     Buy Now
@@ -170,7 +170,7 @@
                         </v-col>
                         <v-col v-for="(item, index) in eventcomment" :key="index" class="mt-4" cols="12" sm="12"
                             style="display:flex; justify-content:center; align-items:center;">
-                            <v-card style="box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08); width:80%; padding-bottom:20px;">
+                            <v-card style="box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08); width:80%; padding-bottom:20px;" class="box-comment">
                                 <v-container>
                                     <v-card-title>
                                         <v-row>
@@ -184,15 +184,15 @@
                                             </v-col>
                                             <v-col cols="12" md="11">
                                                 <v-col cols="12" class="mt-9">
-                                                    <p style="font-weight:700; color:#DA1F1A; text-align:left;">
+                                                    <p class="text-comment" style="font-weight:700; color:#DA1F1A; text-align:left;">
                                                         {{ item.user.user_name }}</p>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <p style="color:#DA1F1A; font-size:12px; text-align:left;">
+                                                    <p class="text-comment" style="color:#DA1F1A; font-size:12px; text-align:left;">
                                                         {{ item.created_at }}</p>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <p style="color:black; text-align:left;">{{ item.event_comment }}
+                                                    <p class="text-comment" style="color:black; text-align:left;">{{ item.event_comment }}
                                                     </p>
                                                 </v-col>
                                                 <v-col cols="12">
@@ -266,7 +266,7 @@
                                  <p class="mt-4" style="text-align:center; font-weight:700; font-size:32px; color:#DA1F1A">Post Comments</p>
                             </v-col>
                             <v-col cols="12" class="mt-4">
-                                    <v-textarea v-model="form.event_comment" filled rounded name="input-7-1"  label="Comment" >
+                                    <v-textarea v-model="form.event_comment" filled rounded name="input-7-1"  label="Comment">
                                     </v-textarea>
                             </v-col>
                             <v-col cols="12" md="6" v-if="this.currentUser != null">
@@ -625,7 +625,7 @@
     }
 
     .detail-event-content {
-        width: 80%;
+        max-width: 1450px;
         height: auto;
         background-color: white;
         margin: 20px;
@@ -716,9 +716,32 @@
             padding: 20px !important;
         }
 
-        .wrap-content-detail-member {
-            display: flex !important;
-            justify-content: center !important;
+        .text-field-event{
+            margin: 0px auto !important;
+        }
+        .button-buy {
+            margin: 0px auto !important;
+        }
+        .box-comment{
+            width: 100% !important;
+        }
+        .text-comment{
+            padding-left: 20px !important;
+        }
+        .text-post-comment{
+            width: 100% !important;
+        }
+        .form-comment{
+            width: 100% !important;
+        }
+        .button-reset{
+           float: none;
+           margin: 0px auto !important;
+        }
+        .button-post{
+           float: none;
+           margin: 0px auto !important;
+           margin-top: 20px !important;
         }
 
     }

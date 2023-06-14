@@ -35,7 +35,7 @@
                         </v-col>
                         <v-col v-for="(item, index) in articlecomment" :key="index" class="mt-4" cols="12" sm="12"
                             style="display:flex; justify-content:center; align-items:center;">
-                            <v-card style="box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08); width:80%; padding-bottom:20px;">
+                            <v-card style="box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08); width:80%; padding-bottom:20px;" class="box-comment">
                                 <v-container>
                                     <v-card-title>
                                         <v-row>
@@ -49,15 +49,15 @@
                                             </v-col>
                                             <v-col cols="12" md="11">
                                                 <v-col cols="12" class="mt-9">
-                                                    <p style="font-weight:700; color:#DA1F1A; text-align:left;">
+                                                    <p  class="text-comment" style="font-weight:700; color:#DA1F1A; text-align:left;">
                                                         {{ item.user.user_name }}</p>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <p style="color:#DA1F1A; font-size:12px; text-align:left;">
+                                                    <p class="text-comment" style="color:#DA1F1A; font-size:12px; text-align:left;">
                                                         {{ item.created_at }}</p>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <p style="color:black; text-align:left;">{{ item.articleuser_comment }}
+                                                    <p class="text-comment" style="color:black; text-align:left;">{{ item.articleuser_comment }}
                                                     </p>
                                                 </v-col>
                                                 <v-col cols="12">
@@ -131,7 +131,7 @@
                                  <p class="mt-4" style="text-align:center; font-weight:700; font-size:32px; color:#DA1F1A">Post Comments</p>
                             </v-col>
                             <v-col cols="12" class="mt-4">
-                                    <v-textarea v-model="form.article_comment" filled rounded name="input-7-1"  label="Comment" >
+                                    <v-textarea v-model="form.article_comment" filled rounded name="input-7-1"  label="Comment" class="text-post-comment" >
                                     </v-textarea>
                             </v-col>
                             <v-col cols="12" md="6" v-if="this.currentUser != null">
@@ -453,7 +453,6 @@
 
         .text-boatschedule {
             padding: 0px 50px;
-            ;
         }
 
         .title-article {
@@ -466,6 +465,27 @@
 
         .rowProduk {
             margin: -12px !important;
+        }
+         .box-comment{
+            width: 100% !important;
+        }
+        .text-comment{
+            padding-left: 20px !important;
+        }
+        .text-post-comment{
+            width: 100% !important;
+        }
+        .form-comment{
+            width: 100% !important;
+        }
+        .button-reset{
+           float: none;
+           margin: 0px auto !important;
+        }
+        .button-post{
+           float: none;
+           margin: 0px auto !important;
+           margin-top: 20px !important;
         }
     }
 </style>

@@ -244,6 +244,13 @@ const router = new VueRouter({
               meta: { title: 'My Article'},
               component: importComponent("ArticleUserDashboard"),
              },
+             //Article User Post
+             {
+              path: "/articleuserpost/:id",
+              name: "ArticleUserPost",
+              meta: { title: 'Article User Post'},
+              component: importComponent("ArticleUserPost"),
+             },
               //Detail Article User
               {
               path: "/detailarticleuser/:id",
@@ -295,6 +302,13 @@ const router = new VueRouter({
           meta: { title: 'Forgot Password'},
           component: importComponent("EmailForgotPassword"),
         },
+        //Page 404
+        {
+          path: '*',
+          name: "Page404",
+          meta: { title: '404 Not Found'},
+          component: importComponent("Page404"),
+      },
   ],
 });
 
@@ -322,7 +336,9 @@ router.beforeEach((to, from, next) =>{
 
     //User
     if(
-      to.name == 'DetailProfileUser' && (localStorage.getItem("user_id") == null || localStorage.getItem('user_email') == null)
+      to.name == 'DetailProfileUser' && (localStorage.getItem("user_id") == null || localStorage.getItem('user_email') == null) ||
+      to.name == 'ArticleUserDashboard' && (localStorage.getItem("user_id") == null || localStorage.getItem('user_email') == null) ||
+      to.name == 'ArticleUserPost' && (localStorage.getItem("user_id") == null || localStorage.getItem('user_email') == null)
     ){
         next({
             name: "LandingPage"

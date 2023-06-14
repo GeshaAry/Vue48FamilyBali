@@ -29,7 +29,7 @@
                             <div class="pictureuser" style="display:flex; justify-content:center; align-items:center"
                                 v-if="user.user_picture == null">
                                 <p @click="dialogPicture = true"
-                                    style="text-align:right; padding-right:45px; padding-top:10px; font-weight:700; color:#DA1F1A; text-decoration: underline; cursor:pointer;">
+                                    style="text-align:right; padding-right:10px; padding-top:250px; font-weight:700; color:#DA1F1A; text-decoration: underline; cursor:pointer;">
                                     Change Picture</p>
                             </div>
                         </v-col>
@@ -122,7 +122,7 @@
                                     </v-col>
                                     <v-col cols="12" md="4" class="mt-4">
                                         <div class="button-change-password" @click="dialogChangePassword = true">
-                                            Ganti Password
+                                            Change Password
                                         </div>
                                     </v-col>
                                     <v-col cols="12" md="4" class="mt-4">
@@ -148,39 +148,38 @@
                 <v-layout row wrap justify-center class="my-5">
                     <v-row>
                         <v-col cols="12">
-                            <p style="font-weight:700; color:#DA1F1A; font-size:32px; text-align:left;">Riwayat
+                            <p class="text-history" style="font-weight:700; color:#DA1F1A; font-size:32px; text-align:left;">Riwayat
                                 Pembelian E-Ticket</p>
                         </v-col>
-                          <v-card style="overflow:hidden; box-shadow:0px 2px 6px rgba(0,0,0,0.05); background-color:white; width:100%;">
-                            <v-card-title>
+                        <v-col cols="12">
+                            <v-card style="box-shadow:0px 2px 6px rgba(0,0,0,0.05); padding: 0px 20px; background-color:white; width:100%;">
                                 <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Transaction Event" single-line hide-details>
                                 </v-text-field>
-                                <v-spacer></v-spacer>
-                            </v-card-title>
-                            <v-data-table :headers="headers" :items="transactionevents" :search="search"
-                                style="background-color:white; color:black;">
-                                <template v-slot:[`item.transactionevent_proofpayment`]="{item}">
-                                    <v-img :src="$baseUrl+'/storage/'+item.transactionevent_proofpayment" height="50px" width="50px" 
-                                        style="object-fit:cover; border-radius:50%; cursor:pointer" @click="showPhotos(item)" />
-                                </template>
-
-                                <template v-slot:[`item.actions`]="{ item }">
-                                    <div style="display:flex; align-items:center;">
-                                    <div v-if="item.transactionevent_status == 'New Transaction' || item.transactionevent_status == 'Transaction Failed' " style="background-color:green; width:80px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
-                                        <span style="cursor: pointer;" @click="editHandlerProof(item)">Edit</span>
-                                    </div>
-                                    <div v-if="item.transactionevent_status == 'New Transaction' || item.transactionevent_status == 'Transaction Failed' " style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
-                                        <span style="cursor: pointer;"  @click="deleteHandler(item)">Delete</span>
-                                    </div>
-                                    <div v-if="item.transactionevent_status == 'Transaction Success'" style="background-color:blue; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
-                                        <span style="cursor: pointer;"  @click="downloadEvent(item.transactionevent_id)">download</span>
-                                    </div>
-                                    </div>
-                                </template>
-                            </v-data-table>
-                        </v-card>
+                            </v-card>
+                        </v-col>
                     </v-row>
                 </v-layout>
+                 <v-data-table :headers="headers" :items="transactionevents" :search="search"
+                    style="background-color:white; color:black;" class="table-event">
+                    <template v-slot:[`item.transactionevent_proofpayment`]="{item}">
+                        <v-img :src="$baseUrl+'/storage/'+item.transactionevent_proofpayment" height="50px" width="50px" 
+                            style="object-fit:cover; border-radius:50%; cursor:pointer" @click="showPhotos(item)" />
+                    </template>
+
+                    <template v-slot:[`item.actions`]="{ item }">
+                        <div style="display:flex; align-items:center;">
+                        <div v-if="item.transactionevent_status == 'New Transaction' || item.transactionevent_status == 'Transaction Failed' " style="background-color:green; width:80px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                            <span style="cursor: pointer;" @click="editHandlerProof(item)">Edit</span>
+                        </div>
+                        <div v-if="item.transactionevent_status == 'New Transaction' || item.transactionevent_status == 'Transaction Failed' " style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                            <span style="cursor: pointer;"  @click="deleteHandler(item)">Delete</span>
+                        </div>
+                        <div v-if="item.transactionevent_status == 'Transaction Success'" style="background-color:blue; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                            <span style="cursor: pointer;"  @click="downloadEvent(item.transactionevent_id)">download</span>
+                        </div>
+                        </div>
+                    </template>
+                </v-data-table>
             </v-container>
         </section>
 
@@ -189,38 +188,37 @@
                 <v-layout row wrap justify-center class="my-5">
                     <v-row>
                         <v-col cols="12">
-                            <p style="font-weight:700; color:#DA1F1A; font-size:32px; text-align:left;">Riwayat
+                            <p class="text-history" style="font-weight:700; color:#DA1F1A; font-size:32px; text-align:left;">Riwayat
                                 Pembelian Merchandise</p>
                         </v-col>
-                        <v-card style="overflow:hidden; box-shadow:0px 2px 6px rgba(0,0,0,0.05); background-color:white; width:100%;">
-                            <v-card-title>
-                                <v-text-field v-model="searchmerchandise" append-icon="mdi-magnify" label="Search Transaction Merchandise" single-line hide-details>
-                                </v-text-field>
-                                <v-spacer></v-spacer>
-                            </v-card-title>
-                            <v-data-table :headers="headersmerchandise" :items="transactionmerchandises" :search="search"
-                                style="background-color:white; color:black;">
-                                <template v-slot:[`item.merchandisetns_proofpayment`]="{item}">
-                                    <v-img :src="$baseUrl+'/storage/'+item.merchandisetns_proofpayment" height="50px" width="50px" 
-                                        style="object-fit:cover; border-radius:50%; cursor:pointer" @click="showPhotos(item)" />
-                                </template>
-
-                                <template v-slot:[`item.actions`]="{ item }">
-                                    <div style="display:flex; align-items:center;">
-                                    <div v-if="item.merchandisetns_status == 'New Transaction' || item.merchandisetns_status == 'Transaction Failed'" style="background-color:green; width:80px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
-                                        <span style="cursor: pointer;" @click="editHandlerProofMerchandise(item)">Edit</span>
-                                    </div>
-                                    <div v-if="item.merchandisetns_status == 'New Transaction' || item.merchandisetns_status == 'Transaction Failed'" style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
-                                        <span style="cursor: pointer;"  @click="deleteHandlerMerchandise(item)">Delete</span>
-                                    </div>
-                                    <div v-if="item.merchandisetns_status == 'Transaction Success'" style="background-color:blue; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
-                                        <span style="cursor: pointer;"  @click="downloadMerchandise(item.merchandisetns_id)">download</span>
-                                    </div>
-                                    </div>
-                                </template>
-                            </v-data-table>
+                        <v-col cols="12">
+                        <v-card style="box-shadow:0px 2px 6px rgba(0,0,0,0.05); padding: 0px 20px; background-color:white; width:100%;">
+                            <v-text-field v-model="searchmerchandise" append-icon="mdi-magnify" label="Search Transaction Merchandise" single-line hide-details>
+                            </v-text-field>
                         </v-card>
+                        </v-col>
                     </v-row>
+                    <v-data-table :headers="headersmerchandise" :items="transactionmerchandises" :search="search"
+                        style="background-color:white; color:black; width:100%;" class="table-event">
+                        <template v-slot:[`item.merchandisetns_proofpayment`]="{item}">
+                            <v-img :src="$baseUrl+'/storage/'+item.merchandisetns_proofpayment" height="50px" width="50px" 
+                                style="object-fit:cover; border-radius:50%; cursor:pointer" @click="showPhotos(item)" />
+                        </template>
+
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <div style="display:flex; align-items:center;">
+                            <div v-if="item.merchandisetns_status == 'New Transaction' || item.merchandisetns_status == 'Transaction Failed'" style="background-color:green; width:80px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                <span style="cursor: pointer;" @click="editHandlerProofMerchandise(item)">Edit</span>
+                            </div>
+                            <div v-if="item.merchandisetns_status == 'New Transaction' || item.merchandisetns_status == 'Transaction Failed'" style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                <span style="cursor: pointer;"  @click="deleteHandlerMerchandise(item)">Delete</span>
+                            </div>
+                            <div v-if="item.merchandisetns_status == 'Transaction Success'" style="background-color:blue; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
+                                <span style="cursor: pointer;"  @click="downloadMerchandise(item.merchandisetns_id)">download</span>
+                            </div>
+                            </div>
+                        </template>
+                    </v-data-table>
                 </v-layout>
             </v-container>
         </section>
@@ -529,8 +527,6 @@
                 var url = this.$api + '/allmember';
                 this.$http.get(url).then(response => {
                     this.itemsmember = response.data.data;
-                    console.log("asdasd");
-                    console.log(this.itemsmember);
                 })
             },
 
@@ -592,7 +588,7 @@
             },
             editHandler(item) {
                 this.editId = localStorage.getItem('user_id');
-                this.selectMember = item.member.member_id;
+                this.selectMember = item.member_id;
                 this.dialogMember = true;
             },
 
@@ -1027,13 +1023,55 @@
         margin-top: 0 !important;
     }
 
-    @media screen and (max-width:768px) {
+    @media screen and (max-width:1060px) {
         .slideCol {
             padding: 0;
         }
 
         .profileuser {
             width: 100%;
+        }
+
+        .button-change-password{
+            margin: 0px auto !important;
+            float: none !important;
+            width: 300px;
+        }
+
+        .button-update-profile{
+            margin: 0px auto !important;
+            float: none !important;
+            width: 300px;
+        }
+
+        .button-update-member{
+            margin: 0px auto !important;
+            float: none !important;
+            width: 300px;
+        }
+
+        .pictureuser{
+            float: none;
+            margin: 0px auto !important;
+        }
+        .picturemember{
+            float: none;
+            margin: 0px auto !important;
+            margin-top: 50px !important;
+        }
+
+        .button-article{
+            width: 200px !important;
+            float: none !important;
+             margin: 0px auto !important;
+        }
+
+        .text-history{
+            text-align: center !important;
+        }
+
+        .table-event{
+            overflow-x: auto !important;
         }
 
     }

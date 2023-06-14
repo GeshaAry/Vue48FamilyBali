@@ -57,6 +57,9 @@
                         this.color = "green";
                         this.snackbar = true;
                         this.load = false;
+                        this.$router.push({
+                            name: 'LoginPage',
+                        });
                     }).catch(error => {
                         this.error_message = error.response.data.message;
                         this.color = "red";
@@ -108,14 +111,14 @@
             padding: 0;
         }
         .thumbnail-left{
-            display:none;
+            display:none !important;
         }
         .wrap-form{
             width:100% !important;
             border-radius: 20px !important;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
         }
     }
 </style>

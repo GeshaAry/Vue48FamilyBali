@@ -111,7 +111,17 @@
                                 <v-text-field filled rounded v-model="form.article_title"
                                     label="Article Title" required>
                                 </v-text-field>
-                                
+
+                                <div style="display:flex; justify-content:center; margin:10px; width:100%; height:400px;"  v-for="(item, index) in article_pictures" :key="index">
+                                     <img :src="$baseUrl+'/storage/'+item.article_picture"
+                                            style="object-fit: cover; width:100%; height:auto;" class="pictures" alt="">
+                                </div>
+
+                                <div style="display:flex; justify-content:center; align-item:center; flex-flow:column">
+                                        <input type="file" @change="onChange" ref="filePhotosArticle" class="filespicture" multiple/>
+                                        <span>Upload maximum size file picture: 1 MB</span>
+                                </div>
+                                                                
                                 <editor
                                     api-key="tx8fjxrs5lqmjq2w9obzcjrdkewcyztzff962uqvi4woty7v"
                                     :init="{
@@ -176,6 +186,20 @@
                 </v-card-action>
             </v-card>
         </v-dialog>
+
+        <v-dialog v-model="dialogConfirmArticlePicture" persistent max-width="400px">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Warning !</span>
+                </v-card-title>
+                <v-card-text>Are you sure to delete this data?</v-card-text>
+                <v-card-action>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="cancelDeletePicture">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text @click="deleteDataPicture">Delete</v-btn>
+                </v-card-action>
+            </v-card>
+        </v-dialog>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom> {{ error_message }}</v-snackbar>
     </v-main>
 </template>
@@ -193,6 +217,7 @@
                 items: [],
                 files: [],
                 articlepictures: [],
+                article_pictures: [],
                 inputType: 'Tambah',
                 load: false,
                 snackbar: false,
@@ -203,6 +228,7 @@
                 dialog: false,
                 dialogConfirm: false,
                 dialogPhotos:false,
+                dialogConfirmArticlePicture:false,
                 dialogPhotosArticlePictures:false,
                 isDisabled: false,
                 previewImageUrl: '',
@@ -355,6 +381,17 @@
                 data.append('article_title', this.form.article_title);
                 data.append('article_description', this.form.article_description);
                 data.append('admin_id', localStorage.getItem('admin_id'));
+                for(let i=0; i<this.files.length; i++){
+                    //  if(this.files.length > 5){
+                    //     alert("You can only upload a maximum of 5 files");
+                    //     this.files.length = [];
+                    //     return;
+                    // }
+                    // else{
+                       
+                    // }
+                    data.append('article_pictures[]', this.files[i]);
+                }
                 data.append('_method', 'PUT');
 
                 var url = this.$api + '/article/' + this.editId;
@@ -403,12 +440,35 @@
                     this.load = false;
                 });
             },
+            deleteDataPicture() {
+                var url = this.$api + '/articlepictures/' + this.deleteId;
+                this.load = true;
+                this.$http.delete(url, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                }).then(response => {
+                    this.error_message = response.data.message;
+                    this.color = "green";
+                    this.snackbar = true;
+                    this.load = false;
+                    this.dialogConfirmArticlePicture = false;
+                    location.reload();
+                }).catch(error => {
+                    this.error_message = error.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                    this.load = false;
+                });
+            },
             editHandler(item) {
                 this.inputType = 'Ubah';
                 this.editId = item.article_id;
                 this.form.article_title = item.article_title;
                 this.form.article_description = item.article_description;
                 this.form.article_thumbnail = item.article_thumbnail;
+                this.article_pictures = item.article_pictures;
+                console.log(item);
                 this.dialog = true;
             },
             deleteHandler(item) {
@@ -416,8 +476,8 @@
                 this.dialogConfirm = true;
             },
             deleteHandlerArticlePictures(item) {
-                this.deleteId = item.article_id;
-                this.dialogConfirm = true;
+                this.deleteId = item.articlepicture_id;
+                this.dialogConfirmArticlePicture = true;
             },
             close() {
                 this.dialog = false;
@@ -436,13 +496,18 @@
             cancelDelete() {
                 this.dialogConfirm = false;
             },
+            cancelDeletePicture() {
+                this.dialogConfirmArticlePicture = false;
+            },
             resetForm() {
                 this.form = {
                     admin_id: '',
                     article_title: '',
                     article_description: '',
+                    article_thumbnail: '',
                 };
                 this.$refs.filePhotosGallery.reset();
+                this.files.length = [];
             },
             showPhotos(item){
                 this.form.article_thumbnail = item.article_thumbnail;

@@ -11,9 +11,6 @@
                 style="background-color:white; color:black;">
                 <template v-slot:[`item.actions`]="{ item }">
                     <div style="display:flex; align-items:center;">
-                    <div style="background-color:green; width:80px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
-                        <span style="cursor: pointer;" @click="editHandler(item)">Edit</span>
-                    </div>
                     <div style="background-color:red; width:80px;margin-left:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; height:30px; color:white">
                         <span style="cursor: pointer;"  @click="deleteHandler(item)">Delete</span>
                     </div>
